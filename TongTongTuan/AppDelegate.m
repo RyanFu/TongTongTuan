@@ -7,15 +7,46 @@
 //
 
 #import "AppDelegate.h"
+#import "LHTabBarController.h"
+#import "LHNavigationController.h"
+#import "TuanGouController.h"
+#import "ZhouBianController.h"
+#import "WoDeController.h"
+#import "GengDuoController.h"
+#import "RESTFulEngine.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [RESTFulEngine getProductTypeOnSuccess:^(NSMutableArray *listOfModelBaseObjects) {
+        
+    } onError:^(NSError *engineError) {
+        
+    }];
+    TuanGouController *tuanGouController = [[TuanGouController alloc] init];
+    ZhouBianController *zhouBianController = [[ZhouBianController alloc] init];
+    WoDeController *woDeController = [[WoDeController alloc] init];
+    GengDuoController *gengDuoController = [[GengDuoController alloc] init];
+    
+    LHNavigationController *nav1, *nav2, *nav3, *nav4;
+    nav1 = [[LHNavigationController alloc] initWithRootViewController:tuanGouController];
+    nav2 = [[LHNavigationController alloc] initWithRootViewController:zhouBianController];
+    nav3 = [[LHNavigationController alloc] initWithRootViewController:woDeController];
+    nav4 = [[LHNavigationController alloc] initWithRootViewController:gengDuoController];
+    
+    NSArray *normalIcons =
+    @[@"tab_bar_tuan_gou_normal",@"tab_bar_zhou_bian_normal",@"tab_bar_wo_de_normal",@"tab_bar_geng_duo_normal"];
+    NSArray *highlightIcons =
+    @[@"tab_bar_tuan_gou_highlight",@"tab_bar_zhou_bian_highlight",@"tab_bar_wo_de_highlight",@"tab_bar_geng_duo_highlight"];
+    LHTabBarController *tabBarController = [[LHTabBarController alloc] initWithViewControllers:@[nav1, nav2,nav3, nav4]
+                                                                         tabBarNormalItemIcons:normalIcons
+                                                                      tabBarHighlightItemIcons:highlightIcons
+                                                               selectedItemBackgroundImageName:@"tab_bar_selected_item_background"
+                                                                     tabBarBackgroundImageName:@"tab_bar_background"];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-   
-    self.window.rootViewController = nil;
+    self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
     return YES;
 }

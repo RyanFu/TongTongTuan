@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
 typedef void (^LHNavigationControllerCompletionBlock)(void);
-
 
 @interface LHNavigationController : UIViewController<UIGestureRecognizerDelegate>
 {

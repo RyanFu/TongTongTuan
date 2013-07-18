@@ -178,7 +178,6 @@ typedef enum {
 }
 
 
-#pragma mark - ChildViewController
 - (UIViewController *)currentViewController
 {
     UIViewController *result = nil;
@@ -190,7 +189,6 @@ typedef enum {
 }
 
 
-#pragma mark - ParentViewController
 - (UIViewController *)previousViewController
 {
     UIViewController *result = nil;
@@ -202,13 +200,11 @@ typedef enum {
 }
 
 
-#pragma mark - Add Pan Gesture
+#pragma mark - 手势识别
 - (void) addPanGestureToView:(UIView*)view
 {
-    NSLog(@"ADD PAN GESTURE $$### %i",[_gestures count]);
     UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                                 action:@selector(gestureRecognizerDidPan:)];
-    panGesture.cancelsTouchesInView = YES;
+                                                                        action:@selector(gestureRecognizerDidPan:)];
     panGesture.delegate = self;
     [view addGestureRecognizer:panGesture];
     [_gestures addObject:panGesture];
@@ -216,15 +212,13 @@ typedef enum {
 }
 
 
-# pragma mark - Avoid Unwanted Vertical Gesture
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer
 {
     CGPoint translation = [panGestureRecognizer translationInView:self.view];
-    return fabs(translation.x) > fabs(translation.y) ;
+    return fabs(translation.x) > fabs(translation.y) ; // 只响应水平手势
 }
 
 
-#pragma mark - Gesture recognizer
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     UIViewController * vc =  [self.viewControllers lastObject];
@@ -240,7 +234,6 @@ typedef enum {
 }
 
 
-#pragma mark - Handle Panning Activity
 - (void) gestureRecognizerDidPan:(UIPanGestureRecognizer*)panGesture
 {
     if(_animationInProgress)
@@ -287,7 +280,8 @@ typedef enum {
 
 
 #pragma mark - Set the required transformation based on percentage
-- (void) transformAtPercentage:(CGFloat)percentage {
+- (void) transformAtPercentage:(CGFloat)percentage
+{
     CGAffineTransform transf = CGAffineTransformIdentity;
     CGFloat newTransformValue =  1 - (percentage*10)/100;
     CGFloat newAlphaValue = percentage* kMaxBlackMaskAlpha;
@@ -297,7 +291,8 @@ typedef enum {
 
 
 #pragma mark - This will complete the animation base on pan direction
-- (void) completeSlidingAnimationWithDirection:(PanDirection)direction {
+- (void) completeSlidingAnimationWithDirection:(PanDirection)direction
+{
     if(direction==PanDirectionRight)
     {
         [self popViewController];
@@ -323,7 +318,8 @@ typedef enum {
 
 
 #pragma mark - Get the origin and size of the visible viewcontrollers(child)
-- (CGRect) getSlidingRectWithPercentageOffset:(CGFloat)percentage orientation:(UIInterfaceOrientation)orientation {
+- (CGRect) getSlidingRectWithPercentageOffset:(CGFloat)percentage orientation:(UIInterfaceOrientation)orientation
+{
     CGRect viewRect = [self viewBoundsWithOrientation:orientation];
     CGRect rectToReturn = CGRectZero;
     UIViewController * vc;
@@ -333,8 +329,10 @@ typedef enum {
     return rectToReturn;
 }
 
+
 #pragma mark - Get the size of view in the main screen
-- (CGRect) viewBoundsWithOrientation:(UIInterfaceOrientation)orientation{
+- (CGRect) viewBoundsWithOrientation:(UIInterfaceOrientation)orientation
+{
 	CGRect bounds = [UIScreen mainScreen].bounds;
     if([[UIApplication sharedApplication]isStatusBarHidden])
     {

@@ -10,6 +10,8 @@
 
 #import "AppDelegate.h"
 
+dispatch_queue_t task_queue;
+
 int main(int argc, char *argv[])
 {
     @autoreleasepool {

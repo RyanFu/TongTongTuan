@@ -9,11 +9,11 @@
 #import "JSONModel.h"
 
 @interface ProductType : JSONModel
-@property (nonatomic, assign) NSUInteger amount;
-@property (nonatomic, assign) NSUInteger typeId;
-@property (nonatomic, assign) NSUInteger parentid;
-@property (nonatomic, assign) NSUInteger orders;
-@property (nonatomic, assign) NSUInteger solutionid;
-@property (nonatomic, copy)   NSString   *typeName;
+@property (nonatomic, assign) NSUInteger     amount;
+@property (nonatomic, assign) NSUInteger     typeId;
+@property (nonatomic, assign) NSUInteger     parentid;
+@property (nonatomic, assign) NSUInteger     orders;
+@property (nonatomic, assign) NSUInteger     solutionid;
+@property (nonatomic, copy)   NSString       *typeName;
 @property (nonatomic, strong) NSMutableArray *listPro_ProType;
 @end

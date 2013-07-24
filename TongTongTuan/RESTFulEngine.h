@@ -8,10 +8,12 @@
 
 #import "MKNetworkEngine.h"
 #import "JSONModel.h"
+#import <CoreLocation/CoreLocation.h>
 
 typedef void (^VoidBlock) (void);
 typedef void (^ModelBlock) (JSONModel* aModelBaseObject);
 typedef void (^ArrayBlock) (NSMutableArray* listOfModelBaseObjects);
+typedef void (^DictionaryBlock)(NSMutableDictionary *dictionary);
 typedef void (^ErrorBlock) (NSError* engineError);
 
 @interface RESTFulEngine : MKNetworkEngine
@@ -19,5 +21,22 @@ typedef void (^ErrorBlock) (NSError* engineError);
 
 + (MKNetworkOperation *)getProductTypeOnSuccess:(ArrayBlock)onSuccess onError:(ErrorBlock)onError;
 
-+ (NSString *)cacheFilePath:(NSString *)fileName;
++ (MKNetworkOperation *)getMenuOnSuccess:(ArrayBlock)onSuccess onError:(ErrorBlock)onError;
+
++ (MKNetworkOperation *)getCityListOnSuccess:(DictionaryBlock)onSuccess onError:(ErrorBlock)onError;
+
+// 获取产品列表，参数含义可参看接口文档
++ (MKNetworkOperation *)getProductListWithPlatformIdentifier:(NSInteger)pid
+                                                   cityId:(NSInteger)cid
+                                                   typeId:(NSInteger)tid
+                                                  groupId:(NSInteger)gid
+                                               coordinate:(CLLocationCoordinate2D)coordinate
+                                                 distance:(NSUInteger)distance
+                                                pageIndex:(NSUInteger)pageIndex
+                                                 pageSize:(NSUInteger)pageSize
+                                               sortNumber:(NSInteger )sortNumber
+                                                  keyWord:(NSString *)keyword
+                                                onSuccess:(ArrayBlock)onSuccess
+                                                  onError:(ErrorBlock)onError;
+
 @end

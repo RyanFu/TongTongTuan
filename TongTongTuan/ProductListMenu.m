@@ -8,39 +8,51 @@
 
 #import "ProductListMenu.h"
 #import "Defines.h"
+#import "RESTFulEngine.h"
+#import "ProductTypeCell.h"
+#import "ProductSubTypeCell.h"
+#import "MenuCell.h"
 
-#define kTopMenuViewHeight 40.0
-#define kButtonWidth (SCREEN_WIDTH / 3.0)
-#define kSelfHeight  (SCREEN_HEIGHT - NAVIGATION_BAR_HEIGHT -TAB_BAR_HEIGHT)
-#define kDropViewHeight (kSelfHeight - kTopMenuViewHeight - 60.0)
 #define kAnimationDuration 0.3
-
 #define kTagLeftDropView   2013
 #define kTagMiddleDropView 2014
 #define kTagRightDropView  2015
 
+
 @interface ProductListMenu()<UITableViewDataSource,UITableViewDelegate>
-@property (nonatomic, strong) UIView      *topMenuView;
-@property (nonatomic, strong) UIView      *leftDropView;
-@property (nonatomic, strong) UIView      *middleDropView;
-@property (nonatomic, strong) UIView      *rightDropView;
-@property (nonatomic, strong) UIView      *maskView;
-@property (nonatomic, strong) UIView      *currentExpandDropView;
-@property (nonatomic, strong) UIButton    *leftDropViewButton;
-@property (nonatomic, strong) UIButton    *middleDropViewButton;
-@property (nonatomic, strong) UIButton    *rightDropViewButton;
-@property (nonatomic, strong) UITableView *productTypeLevelOneTableView;
-@property (nonatomic, strong) UITableView *productTypeLevelTwoTableView;
-@property (nonatomic, strong) UITableView *middelDropTableView;
-@property (nonatomic, strong) UITableView *sortProductTableView;
-@property (nonatomic, assign) BOOL expandLeftDropView, expandMiddleDropView, expandRightDropView;
+@property (nonatomic, strong) UIView                  *topMenuView;
+@property (nonatomic, strong) UIView                  *leftDropView;
+@property (nonatomic, strong) UIView                  *middleDropView;
+@property (nonatomic, strong) UIView                  *rightDropView;
+@property (nonatomic, strong) UIView                  *maskView;
+@property (nonatomic, strong) UIView                  *currentExpandDropView;
+@property (nonatomic, strong) UIButton                *leftDropViewButton;
+@property (nonatomic, strong) UIButton                *middleDropViewButton;
+@property (nonatomic, strong) UIButton                *rightDropViewButton;
+@property (nonatomic, strong) UITableView             *productTypeTableView;
+@property (nonatomic, strong) UITableView             *productSubTypeTableView;
+@property (nonatomic, strong) UITableView             *middelDropTableView;
+@property (nonatomic, strong) UITableView             *sortProductTableView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator1, *activityIndicator2, *activityIndicator3;
+@property (nonatomic, copy)   NSArray                 *productTypeDataSource;
+@property (nonatomic, strong) NSArray                 *productSubTypeDataSource;
+@property (nonatomic, copy)   NSArray                 *middleDropViewDataSource;
+@property (nonatomic, strong) NSArray                 *sortDataSource;
+@property (nonatomic, assign) BOOL                    expandLeftDropView;
+@property (nonatomic, assign) BOOL                    expandMiddleDropView;
+@property (nonatomic, assign) BOOL                    expandRightDropView;
+@property (nonatomic, assign) BOOL                    isLoadingProductTypeData, isCompletedLoadProductTypeData;
+@property (nonatomic, assign) BOOL                    isLoadingMiddleDropViewData, isCompletedLoadMiddleDropViewData;
+@property (nonatomic, assign) BOOL                    isLoadingSortTypeData, isCompletedLoadSortTypeData;
 @end
 
 @implementation ProductListMenu
 
-+ (void)showInView:(UIView *)superView
++ (ProductListMenu *)showInView:(UIView *)superView
 {
-    [superView addSubview:[ProductListMenu shareInstance]];
+    ProductListMenu *menu = [ProductListMenu shareInstance];
+    [superView addSubview:menu];
+    return menu;
 }
 
 
@@ -49,7 +61,7 @@
     static ProductListMenu *menu = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        menu = [[ProductListMenu alloc] initWithFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, kTopMenuViewHeight)];
+        menu = [[ProductListMenu alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kTopMenuViewHeight)];
     });
     return menu;
 }
@@ -90,6 +102,89 @@
     self.expandLeftDropView = NO;
     self.expandMiddleDropView = NO;
     self.expandRightDropView = NO;
+    self.isLoadingProductTypeData  = NO;
+    self.isCompletedLoadProductTypeData = NO;
+    self.isLoadingMiddleDropViewData = NO;
+    self.isCompletedLoadMiddleDropViewData = NO;
+    self.isLoadingSortTypeData = NO;
+    self.isCompletedLoadSortTypeData = NO;
+    
+    [self registerNibFile];
+    [self loadProductTypeData];
+    [self loadMiddleDropViewData];
+    [self loadSortTypeData];
+}
+
+
+- (void)registerNibFile
+{
+    [self.productTypeTableView registerNib:[UINib nibWithNibName:@"ProductTypeCell" bundle:nil]
+                            forCellReuseIdentifier:@"ProductTypeCell"];
+    [self.productSubTypeTableView registerNib:[UINib nibWithNibName:@"ProductSubTypeCell" bundle:nil]
+                       forCellReuseIdentifier:@"ProductSubTypeCell"];
+    [self.middelDropTableView registerNib:[UINib nibWithNibName:@"MenuCell"
+                                                             bundle:nil] forCellReuseIdentifier:@"MenuCell"];
+    [self.sortProductTableView registerNib:[UINib nibWithNibName:@"MenuCell"
+                                                         bundle:nil] forCellReuseIdentifier:@"MenuCell"];
+}
+
+
+#pragma mark Loading Data
+- (void)loadProductTypeData
+{
+    if(self.isLoadingProductTypeData == NO && self.isCompletedLoadProductTypeData == NO)
+    {
+        self.isLoadingProductTypeData = YES;
+        self.isCompletedLoadProductTypeData = NO;
+        [self.activityIndicator1 startAnimating];
+        
+        [RESTFulEngine getProductTypeOnSuccess:^(NSMutableArray *listOfModelBaseObjects){
+            self.isLoadingProductTypeData = NO;
+            self.isCompletedLoadProductTypeData = YES;
+            [self.activityIndicator1 stopAnimating];
+            
+            self.productTypeDataSource = listOfModelBaseObjects;
+            [self.productTypeTableView reloadData];
+            
+        } onError:^(NSError *engineError) {
+            self.isLoadingProductTypeData = NO;
+            self.isCompletedLoadProductTypeData = NO;
+            [self.activityIndicator1 stopAnimating];
+#warning - 处理下载失败
+        }];
+    }
+}
+
+
+-(void)loadMiddleDropViewData
+{
+    if(self.isLoadingMiddleDropViewData == NO && self.isCompletedLoadMiddleDropViewData == NO)
+    {
+        self.isLoadingMiddleDropViewData = YES;
+        self.isCompletedLoadMiddleDropViewData = NO;
+        [self.activityIndicator2 startAnimating];
+        
+        [RESTFulEngine getMenuOnSuccess:^(NSMutableArray *listOfModelBaseObjects) {
+            self.isLoadingMiddleDropViewData = NO;
+            self.isCompletedLoadMiddleDropViewData = YES;
+            [self.activityIndicator2 stopAnimating];
+            
+            self.middleDropViewDataSource = listOfModelBaseObjects;
+            [self.middelDropTableView reloadData];
+        } onError:^(NSError *engineError) {
+            self.isLoadingMiddleDropViewData = NO;
+            self.isCompletedLoadMiddleDropViewData = NO;
+            [self.activityIndicator2 stopAnimating];
+#warning - 处理下载失败
+        }];
+    }
+}
+
+
+- (void)loadSortTypeData
+{
+    self.sortDataSource = @[@"默认排序", @"价格最高", @"价格最低", @"人气最高", @"离我最近", @"最新发布"];
+    [self.sortProductTableView reloadData];
 }
 
 
@@ -117,8 +212,8 @@
     
     _leftDropView = [[UIView alloc] initWithFrame:CGRectMake(0, kTopMenuViewHeight, SCREEN_WIDTH, 0)];
     _leftDropView.tag = kTagLeftDropView;
-    [_leftDropView addSubview:self.productTypeLevelOneTableView];
-    [_leftDropView addSubview:self.productTypeLevelTwoTableView];
+    [_leftDropView addSubview:self.productTypeTableView];
+    [_leftDropView addSubview:self.productSubTypeTableView];
     return _leftDropView;
 }
 
@@ -160,41 +255,42 @@
     
     _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kSelfHeight)];
     _maskView.backgroundColor = [UIColor blackColor];
-    _maskView.alpha = 0.3;
+    _maskView.alpha = 0.5;
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [_maskView addGestureRecognizer:gesture];
     return _maskView;
 }
 
 
-- (UITableView *)productTypeLevelOneTableView
+- (UITableView *)productTypeTableView
 {
-    if(_productTypeLevelOneTableView)
+    if(_productTypeTableView)
     {
-        return _productTypeLevelOneTableView;
+        return _productTypeTableView;
     }
     
-    _productTypeLevelOneTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/2, 0)];
-    _productTypeLevelOneTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    _productTypeLevelOneTableView.delegate = self;
-    _productTypeLevelOneTableView.dataSource = self;
-    return _productTypeLevelOneTableView;
+    _productTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/2, 0)];
+    _productTypeTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _productTypeTableView.delegate = self;
+    _productTypeTableView.dataSource = self;
+    [_productTypeTableView addSubview:self.activityIndicator1];
+    return _productTypeTableView;
 }
 
 
-- (UITableView *)productTypeLevelTwoTableView
+- (UITableView *)productSubTypeTableView
 {
-    if(_productTypeLevelTwoTableView)
+    if(_productSubTypeTableView)
     {
-        return _productTypeLevelTwoTableView;
+        return _productSubTypeTableView;
     }
     
-    _productTypeLevelTwoTableView = [[UITableView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, 0)];
-    _productTypeLevelTwoTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    _productTypeLevelOneTableView.separatorColor = [UIColor redColor];
-    _productTypeLevelTwoTableView.delegate = self;
-    _productTypeLevelTwoTableView.dataSource = self;
-    return _productTypeLevelTwoTableView;
+    _productSubTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, 0)];
+    _productSubTypeTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _productTypeTableView.separatorColor = [UIColor redColor];
+    _productSubTypeTableView.delegate = self;
+    _productSubTypeTableView.dataSource = self;
+    return _productSubTypeTableView;
 }
 
 
@@ -209,6 +305,7 @@
     _middelDropTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _middelDropTableView.delegate = self;
     _middelDropTableView.dataSource = self;
+    [_middelDropTableView addSubview:self.activityIndicator2];
     return _middelDropTableView;
 }
 
@@ -228,6 +325,36 @@
 }
 
 
+- (UIActivityIndicatorView *)activityIndicator1
+{
+    if(_activityIndicator1)
+    {
+        return _activityIndicator1;
+    }
+    
+    _activityIndicator1 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicator1.hidesWhenStopped = YES;
+    _activityIndicator1.center = CGPointMake(SCREEN_WIDTH/4, kDropViewHeight/2);
+    [_activityIndicator1 startAnimating];
+    return _activityIndicator1;
+}
+
+
+- (UIActivityIndicatorView *)activityIndicator2
+{
+    if(_activityIndicator2)
+    {
+        return _activityIndicator2;
+    }
+    
+    _activityIndicator2 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicator2.hidesWhenStopped = YES;
+    _activityIndicator2.center = CGPointMake(SCREEN_WIDTH/4, kDropViewHeight/2);
+    [_activityIndicator2 startAnimating];
+    return _activityIndicator2;
+}
+
+
 - (UIButton *)leftDropViewButton
 {
     if(_leftDropViewButton)
@@ -236,7 +363,7 @@
     }
     
     _leftDropViewButton = [[UIButton alloc] initWithFrame:CGRectMake(0 * kButtonWidth, 0, kButtonWidth, kTopMenuViewHeight)];
-    [_leftDropViewButton setTitle:@"XX" forState:UIControlStateNormal];
+    [_leftDropViewButton setTitle:@"全部" forState:UIControlStateNormal];
     [_leftDropViewButton addTarget:self action:@selector(expandLeftDropView:) forControlEvents:UIControlEventTouchUpInside];
     return _leftDropViewButton;
 }
@@ -250,7 +377,7 @@
     }
     
     _middleDropViewButton = [[UIButton alloc] initWithFrame:CGRectMake(1 * kButtonWidth, 0, kButtonWidth, kTopMenuViewHeight)];
-    [_middleDropViewButton setTitle:@"YY" forState:UIControlStateNormal];
+    [_middleDropViewButton setTitle:@"今日团购" forState:UIControlStateNormal];
     [_middleDropViewButton addTarget:self action:@selector(expandMiddleDropView:) forControlEvents:UIControlEventTouchUpInside];
     return _middleDropViewButton;
 }
@@ -264,7 +391,7 @@
     }
     
     _rightDropViewButton = [[UIButton alloc] initWithFrame:CGRectMake(2 * kButtonWidth, 0, kButtonWidth, kTopMenuViewHeight)];
-    [_rightDropViewButton setTitle:@"ZZ" forState:UIControlStateNormal];
+    [_rightDropViewButton setTitle:@"默认排序" forState:UIControlStateNormal];
     [_rightDropViewButton addTarget:self action:@selector(expandRightDropView:) forControlEvents:UIControlEventTouchUpInside];
     return _rightDropViewButton;
 }
@@ -273,12 +400,20 @@
 #pragma mark - Action
 - (void)expandLeftDropView:(UIButton *)sender
 {
+    if(self.expandLeftDropView == NO)
+    {
+        [self loadProductTypeData];
+    }
     [self expandOrHideDropView:self.leftDropView expandState:&_expandLeftDropView];
 }
 
 
 - (void)expandMiddleDropView:(UIButton *)sender
 {
+    if(self.expandMiddleDropView == NO)
+    {
+        [self loadMiddleDropViewData];
+    }
     [self expandOrHideDropView:self.middleDropView expandState:&_expandMiddleDropView];
 }
 
@@ -316,6 +451,7 @@
     
     CGRect f2 = dropView.frame;
     CGRect f3 = self.frame;
+    
     if(*state)
     {
         f2.size.height = 0;
@@ -363,18 +499,18 @@
 #pragma mark - UITableView Datasource And Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if([tableView isEqual:self.productTypeLevelOneTableView])
+    if([tableView isEqual:self.productTypeTableView])
     {
-        return 0;
-    }else if([tableView isEqual:self.productTypeLevelTwoTableView])
+        return self.productTypeDataSource.count;
+    }else if([tableView isEqual:self.productSubTypeTableView])
     {
-        return 0;
+        return self.productSubTypeDataSource.count;
     }else if([tableView isEqual:self.middelDropTableView])
     {
-        
+        return self.middleDropViewDataSource.count;
     }else if([tableView isEqual:self.sortProductTableView])
     {
-        
+        return self.sortDataSource.count;
     }
     
     return 0;
@@ -383,21 +519,85 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([tableView isEqual:self.productTypeLevelOneTableView])
+    if([tableView isEqual:self.productTypeTableView])
     {
+        ProductTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductTypeCell"];
+        [cell updateView:self.productTypeDataSource[indexPath.row]];
+        return cell;
         
-    }else if([tableView isEqual:self.productTypeLevelTwoTableView])
+    }else if([tableView isEqual:self.productSubTypeTableView])
     {
-        
+        ProductSubTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductSubTypeCell"];
+        [cell updateView:self.productSubTypeDataSource[indexPath.row]];
+        return cell;
     }else if([tableView isEqual:self.middelDropTableView])
-    {
+    {   MenuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MenuCell"];
+        [cell updateView:self.middleDropViewDataSource[indexPath.row]];
+        return cell;
         
     }else if([tableView isEqual:self.sortProductTableView])
     {
-        
+        MenuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MenuCell"];
+        cell.nameLabel.text = self.sortDataSource[indexPath.row];
+        return cell;
     }
     
     return nil;
 }
 
+
+// zhanghao2524 zhanghao0614
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([tableView isEqual:self.productTypeTableView])
+    {
+        ProductType *productType = self.productTypeDataSource[indexPath.row];
+        [self.leftDropViewButton setTitle:productType.typeName forState:UIControlStateNormal];
+        self.productSubTypeDataSource = productType.listPro_ProType;
+        [self.productSubTypeTableView reloadData];
+        
+        if(productType.listPro_ProType == nil || productType.listPro_ProType.count == 0)
+        {
+            [self expandOrHideDropView:self.currentExpandDropView expandState:&_expandLeftDropView];
+
+            if(self.delegate)
+            {
+                [self.delegate productListTopMenu:self didSelectedProductType:self.productTypeDataSource[indexPath.row]];
+            }
+        }
+        
+    }else if([tableView isEqual:self.productSubTypeTableView])
+    {
+        ProductType *productType = self.productSubTypeDataSource[indexPath.row];
+        [self.leftDropViewButton setTitle:productType.typeName forState:UIControlStateNormal];
+        [self expandOrHideDropView:self.currentExpandDropView expandState:&_expandLeftDropView];
+
+       if(self.delegate)
+       {
+            [self.delegate productListTopMenu:self didSelectedProductType:self.productSubTypeDataSource[indexPath.row]];
+       }
+
+    }else if([tableView isEqual:self.middelDropTableView])
+    {
+        Menu *menu = self.middleDropViewDataSource[indexPath.row];
+        [self.middleDropViewButton setTitle:menu.teamname forState:UIControlStateNormal];
+        [self expandOrHideDropView:self.currentExpandDropView expandState:&_expandMiddleDropView];
+
+        if(self.delegate)
+        {
+            [self.delegate productListTopMenu:self didSelectedMenu:self.middleDropViewDataSource[indexPath.row]];
+        }
+    }else if([tableView isEqual:self.sortProductTableView])
+    {
+        NSString *str = self.sortDataSource[indexPath.row];
+        [self.rightDropViewButton setTitle:str forState:UIControlStateNormal];
+        [self expandOrHideDropView:self.currentExpandDropView expandState:&_expandRightDropView];
+
+        if(self.delegate)
+        {
+            NSInteger index = indexPath.row + 1;
+            [self.delegate productListTopMenu:self didSelectedSortType:index];
+        }
+    }
+}
 @end

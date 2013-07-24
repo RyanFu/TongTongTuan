@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseController.h"
 
-@interface TuanGouController : UIViewController
+@interface TuanGouController : BaseController
 
 @end

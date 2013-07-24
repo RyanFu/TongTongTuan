@@ -1,2 +1,5 @@
-platform:ios
+platform :ios, '5.0'
 pod 'MKNetworkKit', '~>0.87'
+pod 'ODRefreshControl', '~>1.1.0'
+#pod 'SDWebImage', '~>3.2'
+pod 'SIAlertView', '~>1.2'

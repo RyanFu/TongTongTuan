@@ -1,0 +1,27 @@
+//
+//  ProductListView.h
+//  TongTongTuan
+//
+//  李红(410139419@qq.com)创建于 13-7-17.
+//  Copyright (c) 2013年 贵阳世纪恒通科技有限公司. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "RESTFulEngine.h"
+
+@protocol ProductListViewDelegate;
+
+@interface ProductListView : UIView
+@property (nonatomic, weak) id<ProductListViewDelegate> delegate;
+@property (nonatomic, weak) UINavigationController *navigationController;
+
++ (ProductListView *)showInView:(UIView *)superView withFrame:(CGRect )frame;
+- (void)refreshListhWithDataSource:(NSArray *)modelObjectArray;
+@end
+
+
+@protocol ProductListViewDelegate <NSObject>
+@required
+- (void)productListView:(ProductListView *)list refreshOnSuccess:(ArrayBlock)arrayBlock onError:(ErrorBlock)errorBlock;
+- (void)productListView:(ProductListView *)list loadMoreOnSuccess:(ArrayBlock)arrayBlock onError:(ErrorBlock)errorBlock;
+@end

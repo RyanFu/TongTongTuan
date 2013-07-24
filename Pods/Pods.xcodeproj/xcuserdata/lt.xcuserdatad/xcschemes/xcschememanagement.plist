@@ -4,6 +4,26 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-MKNetworkKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Pods-ODRefreshControl.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Pods-Reachability.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Pods-SIAlertView.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,7 +32,77 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>082204600BD949BC96BDECD0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0E97BA2925B4462E80BE3350</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2E54C7DC033C4E3C8FEDD778</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>305D8D2B2A824B6E9EF54A09</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3314EBD5153C469B8895F2F8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3EA2238DDF014356B6095816</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4D5CBFADA7A04B9CA7580C7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5FC6CB568603484380BC6C98</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6BDD7EAFD6414E7792552175</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7962532BF99145A9961118F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>840C07FAB42B421C933393B2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>906AE8CB5066464591C037A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AFF0C43BD96D4B799B5883F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B05C6F56E9B141EEBAE85B7B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E04BF82E872B4A80A05D517D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

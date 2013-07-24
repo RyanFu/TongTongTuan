@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "LHTabBarController.h"
-#import "LHNavigationController.h"
 #import "TuanGouController.h"
 #import "ZhouBianController.h"
 #import "WoDeController.h"
@@ -19,21 +18,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [RESTFulEngine getProductTypeOnSuccess:^(NSMutableArray *listOfModelBaseObjects) {
-        
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+
+    [RESTFulEngine getCityListOnSuccess:^(NSMutableDictionary *dictionary) {
     } onError:^(NSError *engineError) {
-        
     }];
+    
     TuanGouController *tuanGouController = [[TuanGouController alloc] init];
     ZhouBianController *zhouBianController = [[ZhouBianController alloc] init];
     WoDeController *woDeController = [[WoDeController alloc] init];
     GengDuoController *gengDuoController = [[GengDuoController alloc] init];
     
-    LHNavigationController *nav1, *nav2, *nav3, *nav4;
-    nav1 = [[LHNavigationController alloc] initWithRootViewController:tuanGouController];
-    nav2 = [[LHNavigationController alloc] initWithRootViewController:zhouBianController];
-    nav3 = [[LHNavigationController alloc] initWithRootViewController:woDeController];
-    nav4 = [[LHNavigationController alloc] initWithRootViewController:gengDuoController];
+    UINavigationController *nav1, *nav2, *nav3, *nav4;
+    nav1 = [[UINavigationController alloc] initWithRootViewController:tuanGouController];
+    nav2 = [[UINavigationController alloc] initWithRootViewController:zhouBianController];
+    nav3 = [[UINavigationController alloc] initWithRootViewController:woDeController];
+    nav4 = [[UINavigationController alloc] initWithRootViewController:gengDuoController];
     
     NSArray *normalIcons =
     @[@"tab_bar_tuan_gou_normal",@"tab_bar_zhou_bian_normal",@"tab_bar_wo_de_normal",@"tab_bar_geng_duo_normal"];
@@ -49,6 +49,12 @@
     self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+void uncaughtExceptionHandler(NSException *exception)
+{
+    NSLog(@"程序崩溃: %@", exception);
+    NSLog(@"\n------------------------------------------------------------------\n调用栈:\n %@", [exception callStackSymbols]);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

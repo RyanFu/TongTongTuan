@@ -65,8 +65,7 @@ typedef void(^SIAlertViewHandler)(SIAlertView *alertView);
 - (void)show;
 - (void)dismissAnimated:(BOOL)animated;
 
-// Added by Li Hong
-
+// 增加几个便捷方法
 + (SIAlertView *)showWithMessage:(NSString *)message text1:(NSString *)ok  okBlock:(void (^)())okBlock;
 + (SIAlertView *)showWithTitle:(NSString *)title andMessage:(NSString *)message text1:(NSString *)ok  okBlock:(void (^)())okBlock;
 + (SIAlertView *)showWithTitle:(NSString *)title andMessage:(NSString *)message text1:(NSString *)ok text2:(NSString *)cancel okBlock:(void (^)())okBlock cancelBlock:(void (^)())cancelBlock;

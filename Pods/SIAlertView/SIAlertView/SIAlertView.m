@@ -120,6 +120,7 @@ static SIAlertView *__si_alert_current_view;
 
 @end
 
+
 #pragma mark - SIAlertItem
 
 @interface SIAlertItem : NSObject
@@ -993,16 +994,15 @@ static SIAlertView *__si_alert_current_view;
 {
     SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:title andMessage:message];
     alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-    if(ok)
-    {
+    
+    if(ok){
         [alertView addButtonWithTitle:ok type:SIAlertViewButtonTypeDefault handler:^(SIAlertView *alertView) {
             [alertView dismissAnimated:YES];
             okBlock();
         }];
     }
     
-    if(cancel)
-    {
+    if(cancel){
         [alertView addButtonWithTitle:cancel type:SIAlertViewButtonTypeDefault handler:^(SIAlertView *alertView) {
             [alertView dismissAnimated:YES];
             cancelBlock();

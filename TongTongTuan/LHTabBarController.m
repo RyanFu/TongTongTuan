@@ -8,9 +8,13 @@
 
 #import "LHTabBarController.h"
 #import "Defines.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define TabBarNoramlFrame CGRectMake(0, SCREEN_HEIGHT - TAB_BAR_HEIGHT, SCREEN_WIDTH, TAB_BAR_HEIGHT)
+#define TabBarHideFrame CGRectMake(0, SCREEN_HEIGHT - TAB_BAR_HEIGHT + TAB_BAR_HEIGHT, SCREEN_WIDTH, TAB_BAR_HEIGHT)
 
 @interface LHTabBarController()<UINavigationControllerDelegate>
-@property (nonatomic, strong) NSArray        *controllers;
+@property (nonatomic, readwrite, strong) NSArray        *controllers;
 @property (nonatomic, strong) NSArray        *normalItemIcons, *highlightItemIcons;
 @property (nonatomic, strong) NSMutableArray *tabBarItems;
 @property (nonatomic, strong) NSString       *selectedItemBackgroundImageName;
@@ -44,6 +48,14 @@
         self.selectedItemBackgroundImageName = itemBackground;
         self.currentSelectedIndex = 0;
         self.lastSelectedIndex = 0;
+        
+        for(UIViewController *c in self.controllers){
+            if([[c class] isSubclassOfClass:[UINavigationController class]]){
+                UINavigationController *nav = (UINavigationController *)c;
+                nav.delegate = self;
+                nav.view.backgroundColor = [UIColor whiteColor];
+            }
+        }
     }
     
     return self;
@@ -55,7 +67,7 @@
     [super loadView];
     
     // 添加标签栏视图
-    self.tabBar = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - TAB_BAR_HEIGHT, SCREEN_WIDTH, TAB_BAR_HEIGHT)];
+    self.tabBar = [[UIView alloc] initWithFrame:TabBarNoramlFrame];
     [self.view addSubview:self.tabBar];
     
     // 设置标签栏背景
@@ -184,7 +196,31 @@
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-  // 在此通过检测viewController.hidesBottomBarWhenPushed的值来隐藏或显示标签栏目
+    if([viewController isEqual:navigationController.viewControllers[0]]){
+        CGRect nbound = navigationController.view.bounds;
+        CGRect bound = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TAB_BAR_HEIGHT );
+        if(CGRectEqualToRect(nbound, bound) == NO){
+            CGRect f = navigationController.view.frame;
+            f.size.height -= TAB_BAR_HEIGHT;
+            navigationController.view.frame = f;
+        }
+        
+        [UIView animateWithDuration:0.35 animations:^{
+            //self.tabBar.frame = TabBarNoramlFrame;
+            self.tabBar.transform = CGAffineTransformMakeScale(1, 1);
+        }];
+    }else{
+        if(viewController.hidesBottomBarWhenPushed){
+            CGRect f = navigationController.view.frame;
+            f.size.height += TAB_BAR_HEIGHT;
+            navigationController.view.frame = f;
+            
+            [UIView animateWithDuration:0.35 animations:^{
+                //self.tabBar.frame = TabBarHideFrame;
+                self.tabBar.transform = CGAffineTransformMakeScale(0, 0);
+            }];
+        }
+    }
 }
 
 

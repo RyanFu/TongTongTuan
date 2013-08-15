@@ -9,6 +9,8 @@
 #import "CityListController.h"
 #import "RESTFulEngine.h"
 #import "Defines.h"
+#import "SIAlertView.h"
+#import "Utilities.h"
 
 @interface CityListController()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -20,25 +22,32 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if(self == [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
-    {
-        [RESTFulEngine getCityListOnSuccess:^(NSMutableDictionary *dictionary) {
-            self.cityListDictionary = dictionary;
-            self.keys = [dictionary allKeys];
-#pragma mark - 使用适合的排序算法
-
-            [self.keys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-            NSDictionary *cityDic = [[NSUserDefaults standardUserDefaults] objectForKey:kLocationCity];
-            if(cityDic)
-            {
-                [self setLocationCtiy:cityDic];
-            }
-            [self.tableView reloadData];
-        } onError:^(NSError *engineError) {
-            
-        }];
+    if(self == [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        [self getCityList];
     }
     return self;
+}
+
+
+- (void)getCityList
+{
+    [RESTFulEngine getCityListOnSuccess:^(NSMutableDictionary *dictionary) {
+        self.cityListDictionary = dictionary;
+        self.keys = [dictionary allKeys];
+#warning   使用适合的排序算法
+        
+        self.keys = [self.keys sortedArrayUsingSelector:@selector(compare:)];
+        NSDictionary *cityDic = [Utilities getLocationCity];
+        if(cityDic){
+            [self setLocationCtiy:cityDic];
+        }
+        [self.tableView reloadData];
+    } onError:^(NSError *engineError) {
+        NSString *reason = [NSString stringWithFormat:@"获取城市列表失败,原因:%@", [engineError localizedDescription]];
+        [SIAlertView showWithTitle:@"提示" andMessage:reason text1:@"重新获取" text2:@"关闭" okBlock:^{
+            [self getCityList];
+        } cancelBlock:^{}];
+    }];
 }
 
 

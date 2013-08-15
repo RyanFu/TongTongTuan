@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface LHTabBarController : UIViewController
+
+@property (nonatomic, readonly) NSArray        *controllers;
+
+
 - (LHTabBarController *)initWithViewControllers:(NSArray *)controllers
                           tabBarNormalItemIcons:(NSArray *)normalItemIcons
                        tabBarHighlightItemIcons:(NSArray *)highlightItemIcons

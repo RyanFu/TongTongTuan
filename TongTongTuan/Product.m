@@ -14,9 +14,19 @@
     if([key isEqualToString:@"id"])
     {
         self.pid = ((NSNumber *)value).integerValue;
-    }else
-    {
+    }else if([key isEqualToString:@"comment_score"]){
+        
+    }else{
         [super setValue:value forKey:key];
     }
+}
+
+- (void)copyDetailInfoToSelf:(Product *)p
+{
+    self.isLoadedDetail = YES;
+    
+    self.promemo = [p.promemo copy];
+    self.buyprompt = [p.buyprompt copy];
+    
 }
 @end

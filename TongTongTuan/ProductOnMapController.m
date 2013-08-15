@@ -24,4 +24,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+- (void)setProductListArray:(NSMutableArray *)productListArray
+{
+    _productListArray = productListArray;
+}
+
 @end

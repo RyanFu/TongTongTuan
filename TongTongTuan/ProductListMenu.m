@@ -12,6 +12,7 @@
 #import "ProductTypeCell.h"
 #import "ProductSubTypeCell.h"
 #import "MenuCell.h"
+#import "SIAlertView.h"
 
 #define kAnimationDuration 0.3
 #define kTagLeftDropView   2013
@@ -150,7 +151,10 @@
             self.isLoadingProductTypeData = NO;
             self.isCompletedLoadProductTypeData = NO;
             [self.activityIndicator1 stopAnimating];
-#warning - 处理下载失败
+
+            [SIAlertView showWithTitle:@"提示" andMessage:@"获取商品类别失败" text1:@"重新获取" text2:@"关闭" okBlock:^{
+                [self loadProductTypeData];
+            } cancelBlock:^{}];
         }];
     }
 }
@@ -175,7 +179,10 @@
             self.isLoadingMiddleDropViewData = NO;
             self.isCompletedLoadMiddleDropViewData = NO;
             [self.activityIndicator2 stopAnimating];
-#warning - 处理下载失败
+
+            [SIAlertView showWithTitle:@"提示" andMessage:@"获取商品菜单失败" text1:@"重新获取" text2:@"关闭" okBlock:^{
+                [self loadMiddleDropViewData];
+            } cancelBlock:^{}];
         }];
     }
 }

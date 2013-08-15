@@ -331,6 +331,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   }
 }
 
+#pragma mark - 序列化支持
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
   [encoder encodeInteger:(NSInteger)self.stringEncoding forKey:@"stringEncoding"];
@@ -427,6 +428,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   return theCopy;
 }
 
+#pragma mark -
 -(void) dealloc {
   
   [_connection cancel];
@@ -517,6 +519,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   [self.downloadStreams addObject:outputStream];
 }
 
+#pragma mark - 初始化操作
 - (id)initWithURLString:(NSString *)aURLString
                  params:(NSDictionary *)params
              httpMethod:(NSString *)method
@@ -578,6 +581,8 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   
   return self;
 }
+
+#pragma mark -
 
 -(void) addHeaders:(NSDictionary*) headersDictionary {
   
@@ -767,7 +772,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   self.cacheHandlingBlock = cacheHandler;
 }
 
-#pragma mark -
+#pragma mark - 重写方法
 #pragma Main method
 -(void) main {
   

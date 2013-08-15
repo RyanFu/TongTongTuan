@@ -10,10 +10,10 @@
 #import "ProductListCell.h"
 #import "ODRefreshControl.h"
 #import "UIImageView+WebCache.h"
+#import "ProductDetailController.h"
 
 @interface ProductListView()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate>
 @property (nonatomic, strong) UITableView *productListTableView;
-@property (nonatomic, strong) NSMutableArray *tableViewDataSource;
 @property (nonatomic, strong) ODRefreshControl *refreshControl;
 @property (nonatomic, assign) BOOL isRefreshing, isLoadingMore;
 @end
@@ -32,7 +32,7 @@
 {
     if([super initWithFrame:frame])
     {
-        self.tableViewDataSource = [NSMutableArray array];
+        self.productListArray = [NSMutableArray array];
         self.isRefreshing = NO;
         self.isLoadingMore = NO;
         
@@ -55,8 +55,8 @@
 
 - (void)refreshListhWithDataSource:(NSArray *)modelObjectArray
 {
-    [self.tableViewDataSource removeAllObjects];
-    [self.tableViewDataSource addObjectsFromArray:modelObjectArray];
+    [self.productListArray removeAllObjects];
+    [self.productListArray addObjectsFromArray:modelObjectArray];
     [self.productListTableView reloadData];
 }
 
@@ -64,50 +64,28 @@
 #pragma mark - UITableView Source Data And Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.tableViewDataSource.count;
+    return self.productListArray.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductListCell"];
-    Product *product = self.tableViewDataSource[indexPath.row];
+    Product *product = self.productListArray[indexPath.row];
     [cell updateView:product];
-    if(CGSizeEqualToSize(cell.thumImageView.image.size, CGSizeZero))
-    {
-        NSLog(@"%@", product.propic);
-    }
-    
-    if(tableView.isDecelerating == NO && tableView.isDragging == NO)
-    {
-        
-    }
+    [cell.thumImageView setImageWithURL:[NSURL URLWithString:product.propic] placeholderImage:nil];
+
     return cell ;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-}
-
-
-#pragma mark - UIScrollView Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(scrollView.isDragging == NO)
-    {
-       NSArray *visibleRows = [self.productListTableView indexPathsForVisibleRows];
-      for(NSIndexPath *indexPath in visibleRows)
-      {
-          Product *product = self.tableViewDataSource[indexPath.row];
-          ProductListCell *cell = (ProductListCell *)[self.productListTableView cellForRowAtIndexPath:indexPath];
-          if(cell.thumImageView.image == nil)
-          {
-              [cell.thumImageView setImageWithURL:[NSURL URLWithString:product.propic] placeholderImage:nil];
-          }
-      }
-    }
+    ProductDetailController *PD = [[ProductDetailController alloc] initWithNibName:@"ProductDetailController" bundle:nil];
+    [self.navigationController pushViewController:PD animated:YES];
+    PD.product =  self.productListArray[indexPath.row];
 }
 
 

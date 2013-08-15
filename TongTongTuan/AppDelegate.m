@@ -13,6 +13,7 @@
 #import "WoDeController.h"
 #import "GengDuoController.h"
 #import "RESTFulEngine.h"
+#import "Crackify.h"
 
 @implementation AppDelegate
 
@@ -25,6 +26,7 @@
     }];
     
     TuanGouController *tuanGouController = [[TuanGouController alloc] init];
+    self.tuanGouController = tuanGouController;
     ZhouBianController *zhouBianController = [[ZhouBianController alloc] init];
     WoDeController *woDeController = [[WoDeController alloc] init];
     GengDuoController *gengDuoController = [[GengDuoController alloc] init];
@@ -47,6 +49,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = tabBarController;
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }

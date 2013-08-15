@@ -40,7 +40,7 @@
 #error MKNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
-@interface MKNetworkEngine (/*Private Methods*/)
+@interface MKNetworkEngine ()
 
 @property (copy, nonatomic) NSString *hostName;
 @property (strong, nonatomic) Reachability *reachability;
@@ -102,6 +102,11 @@ static NSOperationQueue *_sharedNetworkQueue;
   return [self initWithHostName:hostName apiPath:nil customHeaderFields:nil];
 }
 
+- (id) initWithHostName:(NSString*) hostName customHeaderFields:(NSDictionary*) headers {
+    
+    return [self initWithHostName:hostName apiPath:nil customHeaderFields:headers];
+}
+
 - (id) initWithHostName:(NSString*) hostName apiPath:(NSString*) apiPath customHeaderFields:(NSDictionary*) headers {
   
   if((self = [super init])) {
@@ -143,10 +148,6 @@ static NSOperationQueue *_sharedNetworkQueue;
   return self;
 }
 
-- (id) initWithHostName:(NSString*) hostName customHeaderFields:(NSDictionary*) headers {
-  
-  return [self initWithHostName:hostName apiPath:nil customHeaderFields:headers];
-}
 
 #pragma mark -
 #pragma mark Memory Mangement
@@ -177,14 +178,14 @@ static NSOperationQueue *_sharedNetworkQueue;
 + (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                          change:(NSDictionary *)change context:(void *)context
 {
-  if (object == _sharedNetworkQueue && [keyPath isEqualToString:@"operationCount"]) {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMKNetworkEngineOperationCountChanged
-                                                        object:[NSNumber numberWithInteger:(NSInteger)[_sharedNetworkQueue operationCount]]];
-#if TARGET_OS_IPHONE
-    [UIApplication sharedApplication].networkActivityIndicatorVisible =
-    ([_sharedNetworkQueue.operations count] > 0);
-#endif
+      if (object == _sharedNetworkQueue && [keyPath isEqualToString:@"operationCount"]) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMKNetworkEngineOperationCountChanged
+                                                            object:[NSNumber numberWithInteger:(NSInteger)[_sharedNetworkQueue operationCount]]];
+    #if TARGET_OS_IPHONE
+        [UIApplication sharedApplication].networkActivityIndicatorVisible =
+        ([_sharedNetworkQueue.operations count] > 0);
+    #endif
   }
   else {
     [super observeValueForKeyPath:keyPath ofObject:object
@@ -259,6 +260,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   if(error)
     DLog(@"%@", error);
   
+    // pend 挂起的操作
   NSArray *pendingOperations = [files filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
     
     NSString *thisFile = (NSString*) evaluatedObject;

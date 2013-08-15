@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+// 在地图显示商品信息(紧显示本地生活服务类)
 @interface ProductOnMapController : UIViewController
 
+// 设置这个属性将自动更新地图上面的产品信息
+@property (nonatomic, strong) NSMutableArray *productListArray;
 @end

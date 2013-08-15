@@ -12,6 +12,7 @@
 @protocol ProductListViewDelegate;
 
 @interface ProductListView : UIView
+@property (nonatomic, strong) NSMutableArray *productListArray;
 @property (nonatomic, weak) id<ProductListViewDelegate> delegate;
 @property (nonatomic, weak) UINavigationController *navigationController;
 

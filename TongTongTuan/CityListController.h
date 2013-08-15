@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "City.h"
+#import "BaseController.h"
 
 @protocol CityListControllerDelegate;
-@interface CityListController : UIViewController
+
+@interface CityListController : BaseController
 @property (nonatomic, weak) id<CityListControllerDelegate> delegate;
+
+// 将定位得到的城市名称添加到城市列表中“定位城市”的Section中
 - (void)setLocationCtiy:(NSDictionary *)cityDic;
 @end
 

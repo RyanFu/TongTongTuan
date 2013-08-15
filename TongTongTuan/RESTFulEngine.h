@@ -9,6 +9,7 @@
 #import "MKNetworkEngine.h"
 #import "JSONModel.h"
 #import <CoreLocation/CoreLocation.h>
+#import "Product.h"
 
 typedef void (^VoidBlock) (void);
 typedef void (^ModelBlock) (JSONModel* aModelBaseObject);
@@ -25,7 +26,7 @@ typedef void (^ErrorBlock) (NSError* engineError);
 
 + (MKNetworkOperation *)getCityListOnSuccess:(DictionaryBlock)onSuccess onError:(ErrorBlock)onError;
 
-// 获取产品列表，参数含义可参看接口文档
+// 获取商品列表，参数含义可参看接口文档
 + (MKNetworkOperation *)getProductListWithPlatformIdentifier:(NSInteger)pid
                                                    cityId:(NSInteger)cid
                                                    typeId:(NSInteger)tid
@@ -39,4 +40,17 @@ typedef void (^ErrorBlock) (NSError* engineError);
                                                 onSuccess:(ArrayBlock)onSuccess
                                                   onError:(ErrorBlock)onError;
 
+// 搜索商品
++ (MKNetworkOperation *)searchProductWithKeyword:(NSString *)keyword
+                                    onSuccess:(ArrayBlock)onSuccess
+                                      onError:(ErrorBlock)onError;
+
+
+// 获取商品(商品详情)
++ (MKNetworkOperation *)getProductDetail:(Product *)product
+                               onSuccess:(ModelBlock)onSuccess
+                                 onError:(ErrorBlock)onError;
+
+// 缓存文件路径
++ (NSString *)cacheFilePath:(NSString *)fileName;
 @end

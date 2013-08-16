@@ -9,6 +9,7 @@
 #import "BaseController.h"
 #import "Product.h"
 
+// 产品详情
 @interface ProductDetailController : BaseController
 @property (nonatomic, strong) Product *product;
 @end

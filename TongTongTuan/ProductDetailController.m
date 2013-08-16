@@ -9,20 +9,13 @@
 #import "ProductDetailController.h"
 #import "RESTFulEngine.h"
 #import "SIAlertView.h"
+#import "CommentListView.h"
+#import "CommentListController.h"
+#import "ProductRichTextInfoController.h"
 
 static const CGFloat lMargin = 10.0,            
                      rMargin = lMargin,
                      tMargin = 8;
-
-static CGFloat photoAlbumHeight,                      // 商品相册封面高
-               floatViewHeight,                       // 浮动视图高
-               descViewHeight,                        // 商品描述视图高
-               merchantInfoViewHeight,                // 商家信息视图高
-               detailAboutPurchaseViewOriginaHeight,  // 团购详情视图初始高
-               importTipsViewOriginalHeight,          // 购买提示视图初始高
-               webViewOriginalHeight,                 // 团购详情和购买提示中webView视图初始高
-               commentListViewOriginalHeight;         // 评论列表初始高
-
 
 @interface ProductDetailController()<UIScrollViewDelegate,UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -52,6 +45,7 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
 // 团购详情
 @property (weak, nonatomic) IBOutlet UIView *detailAboutPurchaseView;
 @property (weak, nonatomic) IBOutlet UIWebView *detailAboutPurchaseWebView;
+@property (weak, nonatomic) IBOutlet UIImageView *dottedLineImageView;
 
 // 购买必知
 @property (weak, nonatomic) IBOutlet UIView *importTipsView;
@@ -59,6 +53,8 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
 
 // 评论列表
 @property (weak, nonatomic) IBOutlet UIView *commentListView;
+@property (weak, nonatomic) IBOutlet CommentListView *commentTableView;
+@property (weak, nonatomic) IBOutlet UIButton *viewAllCommentButton;
 
 @end
 
@@ -78,16 +74,7 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
     [super viewDidLoad];
     
     self.scrollView.contentSize = CGSizeMake(320, 1000);
-    
-    // 获取各视图的初始高度
-    photoAlbumHeight = self.photoAlbumImageView.bounds.size.height;
-    floatViewHeight = self.floatView.bounds.size.height;
-    descViewHeight = self.descView.bounds.size.height;
-    merchantInfoViewHeight = self.merchantInfoView.bounds.size.height;
-    detailAboutPurchaseViewOriginaHeight = self.detailAboutPurchaseView.bounds.size.height;
-    importTipsViewOriginalHeight = self.importTipsView.bounds.size.height;
-    webViewOriginalHeight = self.detailAboutPurchaseWebView.bounds.size.height;
-    commentListViewOriginalHeight = self.commentListView.bounds.size.height;
+    self.commentTableView.rowHeight = 60;
 }
 
 - (void)setProduct:(Product *)product
@@ -127,44 +114,65 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
     self.productNameLabel.text = self.product.protitle;
     self.descLabel.text = self.product.briefdescription;
     
-//    self.merchantNameLabel.text = 
-//    self.merchantAddressLabel.text =
-//    self.merchantDistanceLabel.text =
+    self.merchantNameLabel.text = self.product.shopname;
+    self.merchantAddressLabel.text = self.product.address;
+    self.merchantDistanceLabel.text = [NSString stringWithFormat:@"%.1fkm",self.product.distance.floatValue];
     
     [self.detailAboutPurchaseWebView loadHTMLString:self.product.promemo baseURL:nil];
     [self.importTipsWebView loadHTMLString:self.product.buyprompt baseURL:nil];
+    
+    if(self.product.commentList.count == 0){
+        self.viewAllCommentButton.hidden = YES;
+        self.commentTableView.commentListArray = [NSArray new];
+    }else{
+        // 在详情界面只显示一条评论
+        self.commentTableView.commentListArray = [NSArray arrayWithObject:[self.product.commentList objectAtIndex:0]];
+        [self.viewAllCommentButton setTitle:[NSString stringWithFormat:@"查看全部%d条评论",self.product.commentList.count]
+                                   forState:UIControlStateNormal];
+    }
 }
 
+//需在WebView的代理方法-(void)webViewDidFinishLoad:中调用此方法，因为只有在WebView加载完内容后才能计算出最终WebView的高度
 - (void)layoutViews
 {
-    CGFloat h = photoAlbumHeight + floatViewHeight + descViewHeight + merchantInfoViewHeight  + (3 * tMargin);
-    CGFloat h1 = self.detailAboutPurchaseWebView.scrollView.contentSize.height;
-    CGFloat h2 = self.importTipsWebView.scrollView.contentSize.height;
-    CGFloat h3 = h1 > webViewOriginalHeight ? (detailAboutPurchaseViewOriginaHeight + h1 - webViewOriginalHeight) : detailAboutPurchaseViewOriginaHeight;
-    CGFloat h4 = h2 > webViewOriginalHeight ? (importTipsViewOriginalHeight + h2 - webViewOriginalHeight) : importTipsViewOriginalHeight;
+    // 计算团购详情况的Origin.y的值
+    CGFloat topMargin = self.photoAlbumImageView.bounds.size.height
+                        + self.floatView.bounds.size.height
+                        + self.descView.bounds.size.height
+                        + self.merchantInfoView.bounds.size.height
+                        + (tMargin * 2);
+    CGFloat y = self.dottedLineImageView.frame.origin.y + 2; // 团购详情中用来展示内容的WebView的Origin.y的值
+    CGFloat h;     // 经计算后WebView的高度
+    if(self.detailAboutPurchaseWebView.scrollView.contentSize.height > self.detailAboutPurchaseWebView.bounds.size.height){
+        h = self.detailAboutPurchaseWebView.scrollView.contentSize.height;
+    }else{
+        h = self.detailAboutPurchaseWebView.bounds.size.height;
+    }
+    CGRect f = self.detailAboutPurchaseView.frame;
+    f.origin.y = topMargin;
+    f.size.height = y + h;    // 将WebView的Origin.y的值y加上WebView本身的高度h就等于团购详情视图的高度
+    self.detailAboutPurchaseView.frame = f;
     
-    CGRect f1 = self.detailAboutPurchaseView.frame;
-    f1.size.height = h3;
-    f1.origin.y = h;
-    self.detailAboutPurchaseView.frame = f1;
+    // 以下计算逻辑跟上面一样
+    topMargin += (f.size.height + tMargin);
+    if(self.importTipsWebView.scrollView.contentSize.height > self.importTipsWebView.bounds.size.height){
+        h = self.importTipsWebView.scrollView.contentSize.height;
+    }else{
+        h = self.importTipsWebView.bounds.size.height;
+    }
+    f = self.importTipsView.frame;
+    f.origin.y = topMargin;
+    f.size.height = y + h;
+    self.importTipsView.frame = f;
     
-    h += (h3 + tMargin);
+    topMargin += (f.size.height + tMargin);
+    f = self.commentListView.frame;
+    f.origin.y = topMargin;
+    self.commentListView.frame = f;
     
-    CGRect f2 = self.importTipsView.frame;
-    f2.size.height = h4;
-    f2.origin.y = h;
-    self.importTipsView.frame = f2;
-    
-    h += (h4 + tMargin);
-    
-    CGRect f3 = self.commentListView.frame;
-    f3.origin.y = h;
-    self.commentListView.frame = f3;
-    
-    h += commentListViewOriginalHeight + 80;
-    
-    self.scrollView.contentSize = CGSizeMake(320, h);
-    
+    // 如果不加74,ScrollView.contentSize.height的值会过小，导致无法显示ScrollView中的所有子视图
+    topMargin += (f.size.height + tMargin + 74);
+    self.scrollView.contentSize = CGSizeMake(320, topMargin);
 }
 
 #pragma mark - Action
@@ -176,18 +184,44 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
     } cancelBlock:^{}];
 }
 
+// 查看所有评论
+- (IBAction)viewAllComments:(id)sender
+{
+    CommentListController *CLC = [[CommentListController alloc] initWithNibName:@"CommentListController" bundle:nil];
+    [self.navigationController pushViewController:CLC animated:YES];
+    CLC.commentListArray = self.product.commentList;
+}
+
+// 查看图文详情
+- (IBAction)viewRichTextInfo:(id)sender
+{
+    ProductRichTextInfoController *PDC = [[ProductRichTextInfoController  alloc] initWithNibName:@"ProductRichTextInfoController" bundle:nil];
+    [self.navigationController pushViewController:PDC animated:YES];
+}
+
+//查看分店
+- (IBAction)viewSubbranch:(id)sender
+{
+    
+}
+
+// 查看地图
+- (IBAction)viewProductOnMap:(id)sender
+{
+    
+}
 
 #pragma mark - UIScrollViewDelegate
  // any offset changes
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(scrollView.contentOffset.y >= photoAlbumHeight){
+    if(scrollView.contentOffset.y >= self.photoAlbumImageView.bounds.size.height){
         CGRect f = self.floatView.frame;
         f.origin.y = scrollView.contentOffset.y;
         self.floatView.frame = f;
     }else{
         CGRect f = self.floatView.frame;
-        f.origin.y = photoAlbumHeight;
+        f.origin.y = self.photoAlbumImageView.bounds.size.height;
         self.floatView.frame = f;
     }
 }
@@ -197,7 +231,7 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
 {
     static NSUInteger count = 0;
     count++;
-    if(count >= 2){
+    if(count >= 2){ // 等待2个WebView加载完内容才重新布局子视图
         [self layoutViews];
     }
 }
@@ -226,6 +260,9 @@ static CGFloat photoAlbumHeight,                      // 商品相册封面高
     [self setCommentListView:nil];
     [self setDetailAboutPurchaseWebView:nil];
     [self setImportTipsWebView:nil];
+    [self setDottedLineImageView:nil];
+    [self setCommentTableView:nil];
+    [self setViewAllCommentButton:nil];
     [super viewDidUnload];
 }
 @end

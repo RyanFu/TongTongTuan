@@ -12,11 +12,23 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
-    {
-        self.navigationController.navigationBarHidden = YES;
+    if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (IBAction)goBackProductListView:(UIButton *)sender

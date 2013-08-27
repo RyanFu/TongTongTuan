@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "UserInfo.h"
 
 @interface Utilities : NSObject
 
@@ -26,5 +27,9 @@
 // 设置和获取是否是第一次启动App
 + (BOOL)isFirstLuanchApp;
 + (void)setFirstLanuchApp;
+
+// 保存或获取用户信息
++ (void)saveUserInfo:(UserInfo *)userInfo;
++ (UserInfo *)getUserInfo;
 
 @end

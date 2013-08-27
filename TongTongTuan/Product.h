@@ -55,11 +55,13 @@
 @property (nonatomic, assign) NSInteger    virtualbuy;
 @property (nonatomic, copy)   NSString     *linkphone;
 @property (nonatomic, copy)   NSString     *shopname;
-@property (nonatomic, strong) NSMutableArray      *commentList;
-@property (nonatomic, copy) NSNumber     *distance;
+@property (nonatomic, assign) CGFloat      distance;
+@property (nonatomic, assign) CGFloat      score_avg;
 @property (nonatomic, copy)   NSString     *address;
 @property (nonatomic, copy)   NSString     *textimgurl;
 @property (nonatomic, assign) BOOL         isLoadedDetail; // 是否载入过产品详情,默认No没有载入，YES载入过.
+@property (nonatomic, strong) NSMutableArray *commentList; // 评论列表
+@property (nonatomic, strong) NSMutableArray *prospecs;    // 产品规格
 
 - (void)copyDetailInfoToSelf:(Product *)p;
 @end

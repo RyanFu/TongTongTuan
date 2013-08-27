@@ -17,7 +17,7 @@
     }else if([key isEqualToString:@"typename"])
     {
         self.typeName = value;
-    }else if([key isEqualToString:@"listPro_ProType"])
+    }else if([key isEqualToString:@"childrentypes"])
     {
         NSArray *subTypeJsonArray = (NSArray *)value;
         if(subTypeJsonArray.count > 0)
@@ -27,7 +27,7 @@
             {
                 [subTypeArray addObject:[[ProductType alloc] initWithDictionary:dic]];
             }
-            self.listPro_ProType = subTypeArray;
+            self.childrentypes = subTypeArray;
         }
     }
     else

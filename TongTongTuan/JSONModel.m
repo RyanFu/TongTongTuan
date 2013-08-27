@@ -32,6 +32,19 @@
     NSLog(@"%@：设置值出错，未定义的键：%@", NSStringFromClass([self class]), key);
 }
 
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    @try {
+        [super setValue:value forKey:key];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"---------------------------\n| 设置值发生异常:%@ |---------------------------\n", [exception reason]);
+    }
+    @finally {
+        
+    }
+}
+
 #pragma mark - NSCoding
 
 -(BOOL) allowsKeyedCoding

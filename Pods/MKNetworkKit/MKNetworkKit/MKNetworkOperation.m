@@ -24,6 +24,7 @@
 //  THE SOFTWARE.
 
 #import "MKNetworkKit.h"
+#import "../../TongTongTuan/FXKeychain+User.h"
 
 #ifdef __OBJC_GC__
 #error MKNetworkKit does not support Objective-C Garbage Collection
@@ -543,8 +544,9 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
     
     NSURL *finalURL = nil;
     
-    if(params)
-      self.fieldsToBePosted = [params mutableCopy];
+      if(params){
+          self.fieldsToBePosted = [params mutableCopy];
+      }
     
     self.stringEncoding = NSUTF8StringEncoding; // use a delegate to get these values later
     
@@ -565,7 +567,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
                                        timeoutInterval:kMKNetworkKitRequestTimeOutInSeconds];
     
     [self.request setHTTPMethod:method];
-    
     [self.request setValue:[NSString stringWithFormat:@"%@, en-us",
                             [[NSLocale preferredLanguages] componentsJoinedByString:@", "]
                             ] forHTTPHeaderField:@"Accept-Language"];
@@ -596,6 +597,16 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   [self.request setValue:[NSString stringWithFormat:@"%@ %@", authType, token]
       forHTTPHeaderField:@"Authorization"];
 }
+
+-(void) setAuthorizationHeaderValueWithCallMethod:(NSString*) methodName
+{
+    NSString *token = nil;
+    if([FXKeychain isUserLogin]){
+    }else{
+    }
+    [self.request setValue:token forHTTPHeaderField:@"Authorization"];
+}
+
 /*
  Printing a MKNetworkOperation object is printed in curl syntax
  */

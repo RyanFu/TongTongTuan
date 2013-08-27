@@ -7,14 +7,9 @@
 //
 
 #import "RESTFulEngine.h"
-#import "Defines.h"
-#import "ProductType.h"
-#import "Menu.h"
-#import "Product.h"
-#import "City.h"
-#import "Utilities.h"
+#import "NSString+MD5.h"
 
-#define kHost @"192.168.1.198"
+#define kHost @"192.168.1.198:10003"
 #define kProductTypeDataCacheFile @"product_type_data.plist"
 #define kMenuDataCacheFile @"menu_data.plist"
 #define kCityListDataCacheFile @"city_data.plist"
@@ -46,9 +41,11 @@
         return nil;
     }else
     {
+        NSDictionary *body = @{@"space":@" "};
         RESTFulEngine *engine = [RESTFulEngine shareInstance];
-        MKNetworkOperation *operation = [engine operationWithPath:@"ProService/GetProType/1"];
-        
+        MKNetworkOperation *operation = [engine operationWithPath:@"ProService/GetProType" params:body];
+        [operation setAuthorizationHeaderValueWithCallMethod:@"GetProType"];
+    
         [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
             NSArray *jsonArray = [completedOperation responseJSON];
             if([jsonArray writeToFile:[RESTFulEngine cacheFilePath:kProductTypeDataCacheFile] atomically:YES] == NO)
@@ -89,8 +86,10 @@
         return nil;
     }else
     {
+        NSDictionary *body = @{@"space":@" "};
         RESTFulEngine *engine = [RESTFulEngine shareInstance];
-        MKNetworkOperation *operation = [engine operationWithPath:@"ProService/GetType/1"];
+        MKNetworkOperation *operation = [engine operationWithPath:@"ProService/GetTeams" params:body];
+        [operation setAuthorizationHeaderValueWithCallMethod:@"GetTeams"];
         
         [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
             NSArray *jsonArray = [completedOperation responseJSON];
@@ -122,13 +121,15 @@
     // 通过GPS定位获得当前的城市名称信息后，需要到保存城市列表的数据容器中查找对应城市的城市代码，而此时有可能城市列表的数据还没有从服务器
     // 端获取，所以在用户第一次使用App时从本地加载城市列表数据以避免上述情况发生
     
-    if([[NSUserDefaults standardUserDefaults] boolForKey:kFirstUseApp] == NO)
+    if([Utilities isFirstLuanchApp] == NO)
     {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"city_data" ofType:@"plist"];
         NSMutableDictionary *cityListDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:path];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFirstUseApp];
-        onSuccess(cityListDictionary);
-        return nil;
+        if(cityListDictionary.count){
+            [Utilities setFirstLanuchApp];
+            onSuccess(cityListDictionary);
+            return nil;
+        }
     }
     
     NSMutableDictionary *cityListDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:[RESTFulEngine cacheFilePath:kCityListDataCacheFile]];
@@ -139,14 +140,14 @@
     }else{
         RESTFulEngine *engine = [RESTFulEngine shareInstance];
         MKNetworkOperation *operation = [engine operationWithPath:@"SysService/GetAllList"];
+        [operation setAuthorizationHeaderValueWithCallMethod:@"GetAllList"];
         
         [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
             NSMutableArray *jsonArray = [completedOperation responseJSON];
             NSMutableDictionary *cityList = [NSMutableDictionary new];
             [cityList setValue:[NSMutableArray new] forKey:@"#"];
             // 服务器端返回的数据格式不符客户端的要求，这里重新组织下数据结构
-            for(NSMutableDictionary *dic in jsonArray)
-            {
+            for(NSMutableDictionary *dic in jsonArray){
                 cityList[dic[@"key"]] = dic[@"areainfo"];
             }
             
@@ -179,14 +180,28 @@
                                                 onSuccess:(ArrayBlock)onSuccess
                                                   onError:(ErrorBlock)onError
 {
-    NSString *apiPath = [NSString stringWithFormat:@"ProService/GetProductList/%d/%d/%d/%d/%f/%f/%d/%d/%d/%d/%@", pid, cid, tid,gid, coordinate.longitude,coordinate.latitude,distance,pageIndex,pageSize, sortNumber, keyword];
+    NSDictionary *body = @{@"sid":[NSNumber numberWithInteger:pid],
+                          @"cityCode":[NSNumber numberWithInteger:cid],
+                          @"typeID":[NSNumber numberWithInteger:tid],
+                          @"teamID":[NSNumber numberWithInteger:gid],
+                          @"xPoint":[NSNumber numberWithFloat:coordinate.latitude],
+                          @"yPoint":[NSNumber numberWithFloat:coordinate.longitude],
+                          @"distance":[NSNumber numberWithInteger:distance],
+                          @"sortNo":[NSNumber numberWithInteger:sortNumber],
+                          @"pageIndex":[NSNumber numberWithInteger:pageIndex],
+                          @"pageSize":[NSNumber numberWithInteger:pageSize]
+                        };
+    
+    NSString *apiPath = [NSString stringWithFormat:@"ProService/GetProductList"];
     RESTFulEngine *engine = [RESTFulEngine shareInstance];
-    MKNetworkOperation *operation = [engine operationWithPath:apiPath];
+    MKNetworkOperation *operation = [engine operationWithPath:apiPath params:body];
+    [operation setAuthorizationHeaderValueWithCallMethod:@"GetProductList"];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
     [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         NSMutableArray *jsonArray = [completedOperation responseJSON];
         NSMutableArray *modelArray = [NSMutableArray new];
-        for(NSMutableDictionary *dic in jsonArray)
-        {
+        for(NSMutableDictionary *dic in jsonArray){
             [modelArray addObject:[[Product alloc] initWithDictionary:dic]];
         }
         onSuccess(modelArray);
@@ -217,10 +232,18 @@
         code = 520100;
     }
     
+    NSDictionary *body = @{@"cityCode":[NSNumber numberWithInteger:code],
+                          @"keyWords":keyword,
+                          @"pageIndex":@0,
+                          @"pageSize":@1000
+                          };
+    
     RESTFulEngine *engine = [RESTFulEngine shareInstance];
-    NSString *path = [NSString stringWithFormat:@"ProService/SearchProduct/%d/%@/1/1000",code,keyword];
+    NSString *path = [NSString stringWithFormat:@"ProService/SearchProduct"];
     path = [path urlEncodedString];
-    MKNetworkOperation *operation = [engine operationWithPath:path];
+    MKNetworkOperation *operation = [engine operationWithPath:path params:body];
+    [operation setAuthorizationHeaderValueWithCallMethod:@"SearchProduct"];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
     
     [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         NSMutableArray *jsonArray = [completedOperation responseJSON];
@@ -244,12 +267,18 @@
                                onSuccess:(ModelBlock)onSuccess
                                  onError:(ErrorBlock)onError
 {
-    RESTFulEngine *engine = [RESTFulEngine shareInstance];
     CLLocationCoordinate2D coordinate = [Utilities getUserCoordinate];
-    NSString *path =
-    [NSString stringWithFormat:@"ProService/GetProduct/%d/%f/%f", product.pid,coordinate.longitude,coordinate.latitude];
-    MKNetworkOperation *operation = [engine operationWithPath:path];
-
+    NSDictionary *body = @{@"productID":[NSNumber numberWithInteger:product.pid],
+                           @"xPoint":[NSNumber numberWithFloat:coordinate.latitude],
+                           @"yPoint":[NSNumber numberWithFloat:coordinate.longitude]
+                           };
+    
+    RESTFulEngine *engine = [RESTFulEngine shareInstance];
+    NSString *path =@"ProService/GetProduct";
+    MKNetworkOperation *operation = [engine operationWithPath:path params:body];
+    [operation setAuthorizationHeaderValueWithCallMethod:@"GetProduct"];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
     [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         onSuccess([[Product alloc] initWithDictionary:[completedOperation responseJSON]]);
     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
@@ -262,6 +291,153 @@
 }
 
 
++ (MKNetworkOperation *)getMyFavoriteProductByUserName:(NSString *)userName
+                                          onSuccess:(ArrayBlock)onSuccess
+                                            onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"userName":userName,
+                           @"pageIndex":[NSNumber numberWithInteger:1],
+                           @"pageSize":[NSNumber numberWithInteger:1000]
+                           };
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"ProService/GetCollectionPro" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        NSArray *jsonArray = [completedOperation responseJSON];
+        NSMutableArray *modelArray = [NSMutableArray new];
+        for(NSMutableDictionary *dic in jsonArray){
+            [modelArray addObject:[[Product alloc] initWithDictionary:dic]];
+        }
+        onSuccess(modelArray);
+        
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)saveMyFavoriteProductByProductId:(NSInteger)productId
+                                             andUserName:(NSString *)userName
+                                               onSuccess:(ModelBlock)onSuccess
+                                                 onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"productID":[NSNumber numberWithInteger:productId],
+                           @"userName":userName
+                           };
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"ProService/CollectionPro" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[ServerReturnValue alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)submitOrder:(Order *)order
+                          onSuccess:(ModelBlock)onSuccess
+                            onError:(ErrorBlock)onError
+{
+    NSDictionary *body = nil;
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"OrderService/SubmitOrder" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)userLoginWithUserName:(NSString *)userName
+                                  andPassword:(NSString *)password
+                                    onSuccess:(ModelBlock)onSuccess
+                                      onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"userName":userName, @"pwd":[password md5]};
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/Login" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[UserLoginInfo alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)newUserRegisterWithPhoneNumber:(NSString *)phoneNumber
+                                           andPassword:(NSString *)password
+                                             onSuccess:(ModelBlock)onSuccess
+                                               onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"phoneNo":phoneNumber, @"pwd":password};
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/Register" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[UserLoginInfo alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)getVCodeWithPhoneNumber:(NSString *)phoneNumber
+                                 registerStatus:(NSInteger )status
+                                      onSuccess:(ModelBlock)onSuccess
+                                        onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"phoneNo":phoneNumber, @"regStatus":[NSNumber numberWithInteger:status]};
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/GetVCode" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[ServerReturnValue alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
 // 缓存文件路径
 + (NSString *)cacheFilePath:(NSString *)fileName
 {
@@ -269,6 +445,7 @@
     NSString *CacheDirectory = paths[0];
     return  [CacheDirectory stringByAppendingPathComponent:fileName];
 }
+
 
 // 缓存是否过期
 + (BOOL)isCacheStale:(NSString *)fileName
@@ -278,4 +455,5 @@
                                       fileModificationDate] timeIntervalSinceNow];
     return abs(stalenessLevel) > 259200; // 4天为过期时间
 }
+
 @end

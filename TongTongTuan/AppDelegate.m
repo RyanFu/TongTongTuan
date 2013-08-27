@@ -10,7 +10,7 @@
 #import "LHTabBarController.h"
 #import "TuanGouController.h"
 #import "ZhouBianController.h"
-#import "WoDeController.h"
+#import "UserProfileController.h"
 #import "GengDuoController.h"
 #import "RESTFulEngine.h"
 #import "Crackify.h"
@@ -19,6 +19,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
 
     [RESTFulEngine getCityListOnSuccess:^(NSMutableDictionary *dictionary) {
@@ -28,7 +29,7 @@
     TuanGouController *tuanGouController = [[TuanGouController alloc] init];
     self.tuanGouController = tuanGouController;
     ZhouBianController *zhouBianController = [[ZhouBianController alloc] init];
-    WoDeController *woDeController = [[WoDeController alloc] init];
+    UserProfileController *woDeController = [[UserProfileController alloc] initWithNibName:@"UserProfileController" bundle:nil];
     GengDuoController *gengDuoController = [[GengDuoController alloc] init];
     
     UINavigationController *nav1, *nav2, *nav3, *nav4;

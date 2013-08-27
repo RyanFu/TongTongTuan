@@ -8,6 +8,7 @@
 
 #import "Product.h"
 #import "Comment.h"
+#import "ProductSpecification.h"
 
 @implementation Product
 - (void)setValue:(id)value forKey:(NSString *)key
@@ -15,11 +16,18 @@
     if([key isEqualToString:@"id"]){
         self.pid = ((NSNumber *)value).integerValue;
         
-    }else if([key isEqualToString:@"comment_score"]){
+    }else if([key isEqualToString:@"comment_score"]){ // 评论列表
         self.commentList = [NSMutableArray new];
         NSArray *array = (NSArray *)value;
         for(NSMutableDictionary *dic in array){
             [self.commentList addObject:[[Comment alloc] initWithDictionary:dic]];
+        }
+        
+    }else if([key isEqualToString:@"prospecs"]){  // 产品规格
+        self.prospecs = [NSMutableArray new];
+        NSArray *array = (NSArray *)value;
+        for(NSMutableDictionary *dic in array){
+            [self.prospecs addObject:[[ProductSpecification alloc] initWithDictionary:dic]];
         }
         
     }else{
@@ -35,9 +43,9 @@
     self.buyprompt = [p.buyprompt copy];
     self.shopname  = [p.shopname copy];
     self.address = [p.address copy];
-    self.distance = [p.distance copy];
-    
-    self.commentList = [NSMutableArray new];
-    [self.commentList addObjectsFromArray:p.commentList];
+    self.commentList = [p.commentList copy];
+    self.prospecs = [p.prospecs copy];
+    self.distance = p.distance;
+    self.pro_model = p.pro_model;
 }
 @end

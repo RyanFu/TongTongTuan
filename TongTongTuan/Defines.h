@@ -23,10 +23,4 @@ __LINE__, [error localizedDescription]); \
 
 #define FLOAT_TO_STRING(f) [NSString stringWithFormat:@"%.2f",f]
 
-#define kFirstUseApp  @"FirstUseApp"
-#define kLocationCity @"kLocationCity"
-#define kCurrentCity  @"kCurrentCity"
-#define kCurrentCoordinateLatitude @"kCurrentCoordinateLatitude"
-#define kCurrentCoordinateLongitude @"kCurrentCoordinateLongitude"
-
 #endif

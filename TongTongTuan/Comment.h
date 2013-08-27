@@ -13,6 +13,6 @@
 *username,*servicecc,*logisticscc,*realcc,*comment,*createdate,*createdatestr;
 
 @property (nonatomic, assign) NSInteger
-cid, ord_order_id, pro_product_id, score_service, score_logistics,score_real,counts;
+cid, ord_order_id, pro_product_id, score_service, score_logistics,score_real,counts,score_avg,cId;
 
 @end

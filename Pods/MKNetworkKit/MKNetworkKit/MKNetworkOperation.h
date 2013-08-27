@@ -352,6 +352,7 @@ typedef enum {
  */
 -(void) setAuthorizationHeaderValue:(NSString*) token forAuthType:(NSString*) authType;
 
+-(void) setAuthorizationHeaderValueWithCallMethod:(NSString*) methodName;
 /*!
  *  @abstract Attaches a file to the request
  *  

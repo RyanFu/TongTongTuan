@@ -9,5 +9,12 @@
 #import "Comment.h"
 
 @implementation Comment
-
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if([key isEqualToString:@"id"]){
+        self.cid = ((NSNumber *)value).integerValue;
+    }else{
+        [super setValue:value forKey:key];
+    }
+}
 @end

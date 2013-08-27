@@ -58,7 +58,7 @@
         }
         self.isCompletedLocaation = YES;
         [Utilities saveUserCoordinate:newLocation.coordinate];
-
+#warning 把查找城市名称的部分独立出来
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
         [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
             if(error || placemarks.count == 0)

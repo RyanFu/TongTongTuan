@@ -17,7 +17,7 @@
     }
     
     UIImage *starImage = [UIImage imageNamed:@"scoreStar@2x.png"];
-    NSAssert(starImage, @"创建评分星星图片失败");
+    NSAssert(starImage, @"创建评分星星图片失败,请指定正确的文件路径");
     
     self.backgroundColor = [UIColor clearColor];
     CGFloat margin = 4.0;

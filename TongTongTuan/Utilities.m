@@ -14,7 +14,8 @@ static NSString *kLat  = @"CurrentCoordinateLatitude",
                 *kLon  = @"kCurrentCoordinateLongitude",
                 *kCC   = @"CurrentCity",
                 *kLC   = @"LocationCity",
-                *kIF   = @"IsFirstLancuhApp";
+                *kIF   = @"IsFirstLancuhApp",
+                *kUI   = @"UserInfo";
 
 @implementation Utilities
 
@@ -63,5 +64,18 @@ static NSString *kLat  = @"CurrentCoordinateLatitude",
 + (void)setFirstLanuchApp
 {
     [UD setBool:YES forKey:kIF];
+}
+
++ (void)saveUserInfo:(UserInfo *)userInfo
+{
+#error ----
+    // 归档
+    [UD setObject:userInfo forKey:kUI];
+}
+
++ (UserInfo *)getUserInfo
+{
+#error ----
+    return [UD objectForKey:kUI];
 }
 @end

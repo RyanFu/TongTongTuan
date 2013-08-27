@@ -305,9 +305,10 @@ static NSOperationQueue *_sharedNetworkQueue;
 -(MKNetworkOperation*) operationWithPath:(NSString*) path
                                   params:(NSDictionary*) body {
   
-  return [self operationWithPath:path
-                          params:body
-                      httpMethod:@"GET"];
+//  return [self operationWithPath:path
+//                          params:body
+//                      httpMethod:@"GET"];
+    return [self operationWithPath:path params:body httpMethod:@"POST"];
 }
 
 -(MKNetworkOperation*) operationWithPath:(NSString*) path

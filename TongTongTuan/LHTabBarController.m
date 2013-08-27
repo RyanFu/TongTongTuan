@@ -197,6 +197,7 @@
       willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if([viewController isEqual:navigationController.viewControllers[0]]){
+        //如果导航控制器目前显示的是根控制器，那么他的边框nbound的大小与bound是相等的
         CGRect nbound = navigationController.view.bounds;
         CGRect bound = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TAB_BAR_HEIGHT );
         if(CGRectEqualToRect(nbound, bound) == NO){
@@ -211,9 +212,13 @@
         }];
     }else{
         if(viewController.hidesBottomBarWhenPushed){
-            CGRect f = navigationController.view.frame;
-            f.size.height += TAB_BAR_HEIGHT;
-            navigationController.view.frame = f;
+            CGRect nbound = navigationController.view.bounds;
+            CGRect bound = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT );
+            if(CGRectEqualToRect(nbound, bound) == NO){
+                CGRect f = navigationController.view.frame;
+                f.size.height += TAB_BAR_HEIGHT;
+                navigationController.view.frame = f;
+            }
             
             [UIView animateWithDuration:0.35 animations:^{
                 //self.tabBar.frame = TabBarHideFrame;

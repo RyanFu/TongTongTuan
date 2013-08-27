@@ -28,7 +28,7 @@ static const NSUInteger kDefaultDistance = 3000;
 static const NSInteger kDefaultProductTypeId  = 0,
                        kDefaultProductGroupId = 1,
                        kDefaultProductSortId  = 1,
-                       kDefaultPageIndex      = 0,
+                       kDefaultPageIndex      = 1,
                        kDefaultPageSize       = 20;
 
 static NSInteger currentProductTypeId = kDefaultProductTypeId,

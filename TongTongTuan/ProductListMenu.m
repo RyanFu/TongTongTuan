@@ -560,10 +560,10 @@
     {
         ProductType *productType = self.productTypeDataSource[indexPath.row];
         [self.leftDropViewButton setTitle:productType.typeName forState:UIControlStateNormal];
-        self.productSubTypeDataSource = productType.listPro_ProType;
+        self.productSubTypeDataSource = productType.childrentypes;
         [self.productSubTypeTableView reloadData];
         
-        if(productType.listPro_ProType == nil || productType.listPro_ProType.count == 0)
+        if(productType.childrentypes == nil || productType.childrentypes.count == 0)
         {
             [self expandOrHideDropView:self.currentExpandDropView expandState:&_expandLeftDropView];
 

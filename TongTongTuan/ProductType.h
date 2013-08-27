@@ -15,5 +15,5 @@
 @property (nonatomic, assign) NSUInteger     orders;
 @property (nonatomic, assign) NSUInteger     solutionid;
 @property (nonatomic, copy)   NSString       *typeName;
-@property (nonatomic, strong) NSMutableArray *listPro_ProType;
+@property (nonatomic, strong) NSMutableArray *childrentypes;
 @end

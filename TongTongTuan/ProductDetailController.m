@@ -11,7 +11,9 @@
 #import "SIAlertView.h"
 #import "CommentListView.h"
 #import "CommentListController.h"
-#import "ProductRichTextInfoController.h"
+#import "ProductDetailInfoController.h"
+#import "ServiceTypeOrderController.h"
+#import "ProductTypeOrderController.h"
 
 static const CGFloat lMargin = 10.0,            
                      rMargin = lMargin,
@@ -116,7 +118,7 @@ static const CGFloat lMargin = 10.0,
     
     self.merchantNameLabel.text = self.product.shopname;
     self.merchantAddressLabel.text = self.product.address;
-    self.merchantDistanceLabel.text = [NSString stringWithFormat:@"%.1fkm",self.product.distance.floatValue];
+    self.merchantDistanceLabel.text = [NSString stringWithFormat:@"%.1fkm",self.product.distance];
     
     [self.detailAboutPurchaseWebView loadHTMLString:self.product.promemo baseURL:nil];
     [self.importTipsWebView loadHTMLString:self.product.buyprompt baseURL:nil];
@@ -179,9 +181,31 @@ static const CGFloat lMargin = 10.0,
 // 立即抢购
 - (IBAction)buyNow:(id)sender
 {
-    [SIAlertView showWithTitle:@"👩👩👩👩" andMessage:@"🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫" text1:@"👨👨" text2:@"🐶🐶" okBlock:^{
-        [self buyNow:nil];
-    } cancelBlock:^{}];
+    switch(self.product.pro_model){
+        case 1: //商品类
+        {
+            ProductTypeOrderController *PTOC =
+            [[ProductTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
+            [self.navigationController pushViewController:PTOC animated:YES];
+            PTOC.product = self.product;
+            break;
+        }
+        case 2: // 生活服务类
+        {
+            ServiceTypeOrderController *STOC =
+            [[ServiceTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
+            [self.navigationController pushViewController:STOC animated:YES];
+            STOC.product = self.product;
+            break;
+        }
+        
+        case 3: // 优惠券
+        break;
+        
+        default:
+        [SIAlertView showWithMessage:@"抱歉，商品类别数据发生错误!" text1:@"关闭" okBlock:^{}];
+        break;
+    }
 }
 
 // 查看所有评论
@@ -195,8 +219,10 @@ static const CGFloat lMargin = 10.0,
 // 查看图文详情
 - (IBAction)viewRichTextInfo:(id)sender
 {
-    ProductRichTextInfoController *PDC = [[ProductRichTextInfoController  alloc] initWithNibName:@"ProductRichTextInfoController" bundle:nil];
-    [self.navigationController pushViewController:PDC animated:YES];
+    ProductDetailInfoController *PDIC = [[ProductDetailInfoController alloc] initWithNibName:@"ProductDetailInfoController"
+                                                                                      bundle:nil];
+    [self.navigationController pushViewController:PDIC animated:YES];
+    PDIC.product = self.product;
 }
 
 //查看分店

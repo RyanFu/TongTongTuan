@@ -1,24 +1,24 @@
 //
-//  ProductRichTextInfoController.m
+//  PayProductTypeOrderController.m
 //  TongTongTuan
 //
-//  Created by 李红 on 13-8-16.
+//  Created by 李红 on 13-8-26.
 //  Copyright (c) 2013年 贵阳世纪恒通科技有限公司. All rights reserved.
 //
 
-#import "ProductRichTextInfoController.h"
+#import "PayProductTypeOrderController.h"
 
-@interface ProductRichTextInfoController ()<UIWebViewDelegate>
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@interface PayProductTypeOrderController ()
+
 @end
 
-@implementation ProductRichTextInfoController
+@implementation PayProductTypeOrderController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"图文详情";
+        // Custom initialization
     }
     return self;
 }
@@ -35,9 +35,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload
-{
-    [self setWebView:nil];
-    [super viewDidUnload];
-}
 @end

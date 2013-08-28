@@ -7,14 +7,14 @@
 //
 
 #import "NSString+MD5.h"
-#import <CommonCrypto/CommonDigest.h> // Need to import for CC_MD5 access
+#import <CommonCrypto/CommonDigest.h> 
 
 @implementation NSString (MD5)
 - (NSString *)md5
 {
     const char *cStr = [self UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-    CC_MD5( cStr, strlen(cStr), result ); // This is the md5 call
+    CC_MD5( cStr, strlen(cStr), result ); 
     return [NSString stringWithFormat:
             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
             result[0], result[1], result[2], result[3],

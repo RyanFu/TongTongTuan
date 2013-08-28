@@ -8,6 +8,8 @@
 
 #import "RESTFulEngine.h"
 #import "NSString+MD5.h"
+#import "FXKeychain+User.h"
+#import "AppDelegate.h"
 
 #define kHost @"192.168.1.198:10003"
 #define kProductTypeDataCacheFile @"product_type_data.plist"
@@ -391,6 +393,25 @@
     return operation;
 }
 
+// 在用户修改密码后，应该退出登陆，否则调用此方法获取用户信息会导致获取失败
++ (void)getUserInfoOnSuccess:(VoidBlock)onSuccess
+                     onError:(ErrorBlock)onError
+{
+    if([FXKeychain isUserLogin]){
+        NSString *account = [FXKeychain userAccount];
+        NSString *passwor = [FXKeychain userPassword];
+        
+        [RESTFulEngine userLoginWithUserName:account andPassword:passwor onSuccess:^(JSONModel *aModelBaseObject) {
+            UserLoginInfo *ULI = (UserLoginInfo *)aModelBaseObject;
+            if(ULI.result){
+                SetUserInfo(ULI.CustomerInfo);
+                onSuccess();
+            }
+        } onError:^(NSError *engineError) {
+            onError(engineError);
+        }];
+    }
+}
 
 + (MKNetworkOperation *)newUserRegisterWithPhoneNumber:(NSString *)phoneNumber
                                            andPassword:(NSString *)password
@@ -405,6 +426,29 @@
 
     [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         onSuccess([[UserLoginInfo alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
+
+
++ (MKNetworkOperation *)resetUserPasswordWithUserAccount:(NSString *)userAccount
+                                           andPasword:(NSString *)password
+                                            onSuccess:(ModelBlock)onSuccess
+                                              onError:(ErrorBlock)onError
+{
+    NSDictionary *body = @{@"phoneNo":userAccount, @"pwd":password};
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/EditPassword" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[ServerReturnValue alloc] initWithDictionary:[completedOperation responseJSON]]);
     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
         LHError(error);
         onError(error);

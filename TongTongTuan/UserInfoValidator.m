@@ -10,13 +10,13 @@
 
 @implementation UserInfoValidator
 
-BOOL isValid(NSString *validateObj, NSString *regEx)
+BOOL valid(NSString *validateObj, NSString *regEx)
 {
     return [[NSPredicate predicateWithFormat:@"SELF MATCHES%@", regEx] evaluateWithObject:validateObj];
 }
 
 
-+ (BOOL)isValidMobileNumber:(NSString*)mobileNum
++ (BOOL)validMobileNumber:(NSString*)mobileNum
 {
     /* 手机号
      * 移动：134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188
@@ -60,24 +60,33 @@ BOOL isValid(NSString *validateObj, NSString *regEx)
      */
     NSString *GZ  = @"^085[1-9]\\d{7,8}$";
     
-    return (   isValid(mobileNum, MOBILE)
-            || isValid(mobileNum, CM)
-            || isValid(mobileNum, CU)
-            || isValid(mobileNum, CT)
-            || isValid(mobileNum, GZ));
+    return (   valid(mobileNum, MOBILE)
+            || valid(mobileNum, CM)
+            || valid(mobileNum, CU)
+            || valid(mobileNum, CT)
+            || valid(mobileNum, GZ));
 }
 
 
-+ (BOOL)isValidEmail:(NSString *)email
++ (BOOL)validEmail:(NSString *)email
 {
-    NSString *emailRegEx = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    return isValid(email, emailRegEx);
+    return valid(email, @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
 }
 
 
-+  (BOOL)isValidZipCode:(NSString *)zipCode
++  (BOOL)validZipCode:(NSString *)zipCode
 {
-    NSString *zipCodeRegEx = @"[1-9]\\d{5}(?!\\d)";
-    return isValid(zipCode, zipCodeRegEx);
+    return valid(zipCode, @"[1-9]\\d{5}(?!\\d)");
+}
+
+
++ (BOOL)isDecimal:(NSString *)string
+{
+    BOOL aBool = valid(string, @"^(?:|0|[1-9]\\d*)(?:\\.\\d*)?$");
+    if(aBool){
+        char c = [string characterAtIndex:0];
+        return c == '.' ?  NO : YES;
+    }
+    return aBool;
 }
 @end

@@ -73,6 +73,10 @@
 		697072DB17CC7DB300C64C72 /* UserInfoValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 697072DA17CC7DB300C64C72 /* UserInfoValidator.m */; };
 		697072E117CCAB1700C64C72 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 697072E017CCAB1700C64C72 /* NSString+MD5.m */; };
 		69891DC117B221670000CE29 /* Crackify.m in Sources */ = {isa = PBXBuildFile; fileRef = 69891DC017B221670000CE29 /* Crackify.m */; };
+		698BEC1117CDDDC000394138 /* UserAccountSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 698BEC0F17CDDDC000394138 /* UserAccountSettingController.m */; };
+		698BEC1217CDDDC000394138 /* UserAccountSettingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698BEC1017CDDDC000394138 /* UserAccountSettingController.xib */; };
+		698BEC1617CDEFCB00394138 /* ResetUserPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 698BEC1417CDEFCA00394138 /* ResetUserPasswordController.m */; };
+		698BEC1717CDEFCB00394138 /* ResetUserPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698BEC1517CDEFCA00394138 /* ResetUserPasswordController.xib */; };
 		698C623817BDCD2C00E8C752 /* CommentListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 698C623717BDCD2C00E8C752 /* CommentListView.m */; };
 		698C623B17BDCF0C00E8C752 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 698C623A17BDCF0C00E8C752 /* CommentCell.m */; };
 		698C623D17BDCF1B00E8C752 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698C623C17BDCF1B00E8C752 /* CommentCell.xib */; };
@@ -244,6 +248,12 @@
 		697072E017CCAB1700C64C72 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		69891DBF17B221670000CE29 /* Crackify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crackify.h; sourceTree = "<group>"; };
 		69891DC017B221670000CE29 /* Crackify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crackify.m; sourceTree = "<group>"; };
+		698BEC0E17CDDDC000394138 /* UserAccountSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccountSettingController.h; sourceTree = "<group>"; };
+		698BEC0F17CDDDC000394138 /* UserAccountSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAccountSettingController.m; sourceTree = "<group>"; };
+		698BEC1017CDDDC000394138 /* UserAccountSettingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserAccountSettingController.xib; sourceTree = "<group>"; };
+		698BEC1317CDEFCA00394138 /* ResetUserPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetUserPasswordController.h; sourceTree = "<group>"; };
+		698BEC1417CDEFCA00394138 /* ResetUserPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetUserPasswordController.m; sourceTree = "<group>"; };
+		698BEC1517CDEFCA00394138 /* ResetUserPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetUserPasswordController.xib; sourceTree = "<group>"; };
 		698C623617BDCD2C00E8C752 /* CommentListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListView.h; sourceTree = "<group>"; };
 		698C623717BDCD2C00E8C752 /* CommentListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListView.m; sourceTree = "<group>"; };
 		698C623917BDCF0C00E8C752 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
@@ -550,6 +560,19 @@
 			name = Resource;
 			sourceTree = "<group>";
 		};
+		698BEC0D17CDDBDD00394138 /* UserAccountSetting */ = {
+			isa = PBXGroup;
+			children = (
+				698BEC0E17CDDDC000394138 /* UserAccountSettingController.h */,
+				698BEC0F17CDDDC000394138 /* UserAccountSettingController.m */,
+				698BEC1017CDDDC000394138 /* UserAccountSettingController.xib */,
+				698BEC1317CDEFCA00394138 /* ResetUserPasswordController.h */,
+				698BEC1417CDEFCA00394138 /* ResetUserPasswordController.m */,
+				698BEC1517CDEFCA00394138 /* ResetUserPasswordController.xib */,
+			);
+			name = UserAccountSetting;
+			sourceTree = "<group>";
+		};
 		698C623517BDCCF300E8C752 /* CommentListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -744,6 +767,7 @@
 		69E7E99D17CB523B00F9E338 /* WoDe */ = {
 			isa = PBXGroup;
 			children = (
+				698BEC0D17CDDBDD00394138 /* UserAccountSetting */,
 				697072CF17CC358A00C64C72 /* UserProfileController.h */,
 				697072D017CC358A00C64C72 /* UserProfileController.m */,
 				697072D117CC358A00C64C72 /* UserProfileController.xib */,
@@ -892,6 +916,8 @@
 				69E7E99A17CB4C0F00F9E338 /* PayOrderTypeController.xib in Resources */,
 				697072D317CC358A00C64C72 /* UserProfileController.xib in Resources */,
 				697072D817CC4B2F00C64C72 /* UserLoginController.xib in Resources */,
+				698BEC1217CDDDC000394138 /* UserAccountSettingController.xib in Resources */,
+				698BEC1717CDEFCB00394138 /* ResetUserPasswordController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1047,8 @@
 				697072D717CC4B2F00C64C72 /* UserLoginController.m in Sources */,
 				697072DB17CC7DB300C64C72 /* UserInfoValidator.m in Sources */,
 				697072E117CCAB1700C64C72 /* NSString+MD5.m in Sources */,
+				698BEC1117CDDDC000394138 /* UserAccountSettingController.m in Sources */,
+				698BEC1617CDEFCB00394138 /* ResetUserPasswordController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@
 #import "UserInfoValidator.h"
 #import "SIAlertView.h"
 #import "Utilities.h"
+#import "AppDelegate.h"
 
 @interface UserLoginController ()
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
@@ -32,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,7 +75,7 @@
                                    UserLoginInfo *v = (UserLoginInfo *)aModelBaseObject;
                                    if(v.result == YES){ // 登陆成功
                                        [FXKeychain saveUserAccount:userName andPassword:userPasword];
-                                       [Utilities saveUserInfo:v.CustomerInfo];
+                                       SetUserInfo(v.CustomerInfo);
                                        self.loginBlock(YES);
                                        [self dismiss:nil];
                                    }else{

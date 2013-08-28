@@ -66,16 +66,5 @@ static NSString *kLat  = @"CurrentCoordinateLatitude",
     [UD setBool:YES forKey:kIF];
 }
 
-+ (void)saveUserInfo:(UserInfo *)userInfo
-{
-#error ----
-    // 归档
-    [UD setObject:userInfo forKey:kUI];
-}
 
-+ (UserInfo *)getUserInfo
-{
-#error ----
-    return [UD objectForKey:kUI];
-}
 @end

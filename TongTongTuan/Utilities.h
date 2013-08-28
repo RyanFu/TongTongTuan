@@ -28,8 +28,4 @@
 + (BOOL)isFirstLuanchApp;
 + (void)setFirstLanuchApp;
 
-// 保存或获取用户信息
-+ (void)saveUserInfo:(UserInfo *)userInfo;
-+ (UserInfo *)getUserInfo;
-
 @end

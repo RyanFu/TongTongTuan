@@ -84,12 +84,23 @@ typedef void (^ErrorBlock) (NSError* engineError);
                                     onSuccess:(ModelBlock)onSuccess
                                       onError:(ErrorBlock)onError;
 
+// 获取已登陆用户的用户信息
+// 在用户修改密码后，应该退出登陆，否则调用此方法获取用户信息会导致获取失败
+// 此方法在成功获取用户信息后，会通过SetUserInfo()宏保存用户信息
++ (void)getUserInfoOnSuccess:(VoidBlock)onSuccess
+                     onError:(ErrorBlock)onError;
+
 // 用户注册
 + (MKNetworkOperation *)newUserRegisterWithPhoneNumber:(NSString *)phoneNumber
                                            andPassword:(NSString *)password
                                              onSuccess:(ModelBlock)onSuccess
                                                onError:(ErrorBlock)onError;
 
+// 重置密码
++ (MKNetworkOperation *)resetUserPasswordWithUserAccount:(NSString *)userAccount
+                                           andPasword:(NSString *)password
+                                            onSuccess:(ModelBlock)onSuccess
+                                              onError:(ErrorBlock)onError;
 
 // 获取验证码
 // @registerStatus 注册状态 0不检查是否注册 1检查是否注册，根据状态不同，返回的Message不同

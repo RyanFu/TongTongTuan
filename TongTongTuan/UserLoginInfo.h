@@ -11,7 +11,7 @@
 
 // 作为用户登陆的返回值
 @interface UserLoginInfo : JSONModel
-@property (nonatomic, copy)   UserInfo *CustomerInfo;
+@property (nonatomic, strong)   UserInfo *CustomerInfo;
 @property (nonatomic, copy)   NSString *message;
 @property (nonatomic, assign) BOOL result;
 @end

@@ -14,6 +14,8 @@
 #import "ProductDetailInfoController.h"
 #import "ServiceTypeOrderController.h"
 #import "ProductTypeOrderController.h"
+#import "FXKeychain+User.h"
+#import "UserLoginController.h"
 
 static const CGFloat lMargin = 10.0,            
                      rMargin = lMargin,
@@ -95,6 +97,7 @@ static const CGFloat lMargin = 10.0,
         Product *p = (Product *)aModelBaseObject;
         [self.product copyDetailInfoToSelf:p];
         [self updateViewContext];
+        p = nil;
     } onError:^(NSError *engineError) {
         NSString *reason = [NSString stringWithFormat:@"获取产品详情失败,原因:%@",[engineError localizedDescription]];
         [SIAlertView showWithTitle:@"提示" andMessage:reason text1:@"重试" text2:@"关闭" okBlock:^{
@@ -181,31 +184,48 @@ static const CGFloat lMargin = 10.0,
 // 立即抢购
 - (IBAction)buyNow:(id)sender
 {
-    switch(self.product.pro_model){
-        case 1: //商品类
-        {
-            ProductTypeOrderController *PTOC =
-            [[ProductTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
-            [self.navigationController pushViewController:PTOC animated:YES];
-            PTOC.product = self.product;
-            break;
+    void (^TempBlock)(void) = ^(void){
+        switch(self.product.pro_model){
+            case 1: //商品类
+            {
+                ProductTypeOrderController *PTOC =
+                [[ProductTypeOrderController alloc] initWithNibName:@"ProductTypeOrderController" bundle:nil];
+                [self.navigationController pushViewController:PTOC animated:YES];
+                PTOC.product = self.product;
+                break;
+            }
+            case 2: // 生活服务类
+            {
+                ServiceTypeOrderController *STOC =
+                [[ServiceTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
+                [self.navigationController pushViewController:STOC animated:YES];
+                STOC.product = self.product;
+                break;
+            }
+                
+            case 3: // 优惠券
+                break;
+                
+            default:
+                [SIAlertView showWithMessage:@"抱歉，商品类别数据发生错误!" text1:@"关闭" okBlock:^{}];
+                break;
         }
-        case 2: // 生活服务类
-        {
-            ServiceTypeOrderController *STOC =
-            [[ServiceTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
-            [self.navigationController pushViewController:STOC animated:YES];
-            STOC.product = self.product;
-            break;
-        }
-        
-        case 3: // 优惠券
-        break;
-        
-        default:
-        [SIAlertView showWithMessage:@"抱歉，商品类别数据发生错误!" text1:@"关闭" okBlock:^{}];
-        break;
+    };
+    
+    if([FXKeychain isUserLogin]){
+        TempBlock();
+    }else{
+        UserLoginController *ULC =
+        [[UserLoginController alloc] initWithNibName:@"UserLoginController" bundle:nil];
+        [self presentModalViewController:ULC animated:YES];
+        ULC.loginBlock = ^(BOOL flag){
+            if(flag){
+                TempBlock();
+            }
+        };
     }
+    
+    
 }
 
 // 查看所有评论

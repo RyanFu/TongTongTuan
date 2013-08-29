@@ -97,10 +97,11 @@ typedef void (^ErrorBlock) (NSError* engineError);
                                                onError:(ErrorBlock)onError;
 
 // 重置密码
-+ (MKNetworkOperation *)resetUserPasswordWithUserAccount:(NSString *)userAccount
-                                           andPasword:(NSString *)password
-                                            onSuccess:(ModelBlock)onSuccess
-                                              onError:(ErrorBlock)onError;
++ (MKNetworkOperation *)resetUserPasswordWithUserID:(NSNumber *)userId
+                                      andOldPasword:(NSString *)oldPassword
+                                        newPassword:(NSString *)newPassword
+                                          onSuccess:(ModelBlock)onSuccess
+                                            onError:(ErrorBlock)onError;
 
 // 获取验证码
 // @registerStatus 注册状态 0不检查是否注册 1检查是否注册，根据状态不同，返回的Message不同

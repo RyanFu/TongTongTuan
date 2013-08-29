@@ -207,8 +207,8 @@
         }
         
         [UIView animateWithDuration:0.35 animations:^{
-            //self.tabBar.frame = TabBarNoramlFrame;
-            self.tabBar.transform = CGAffineTransformMakeScale(1, 1);
+            self.tabBar.frame = TabBarNoramlFrame;
+            //self.tabBar.transform = CGAffineTransformMakeScale(1, 1);
         }];
     }else{
         if(viewController.hidesBottomBarWhenPushed){
@@ -221,8 +221,8 @@
             }
             
             [UIView animateWithDuration:0.35 animations:^{
-                //self.tabBar.frame = TabBarHideFrame;
-                self.tabBar.transform = CGAffineTransformMakeScale(0, 0);
+                self.tabBar.frame = TabBarHideFrame;
+                //self.tabBar.transform = CGAffineTransformMakeScale(0, 0);
             }];
         }
     }

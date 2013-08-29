@@ -12,5 +12,5 @@ typedef void (^ResetPasswordSuccessfulBlock)(void);
 
 // 重置用户密码
 @interface ResetUserPasswordController : BaseController
-@property (nonatomic, copy) ResetPasswordSuccessfulBlock ResetPasswordSuccessfulBlock;
+@property (nonatomic, copy) ResetPasswordSuccessfulBlock resetPasswordSuccessfulBlock;
 @end

@@ -45,6 +45,11 @@
     [super viewDidLoad];
     
     self.tableView.tableHeaderView = self.headerView;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self updateUI];
 }
 

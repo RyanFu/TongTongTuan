@@ -269,6 +269,7 @@
                                onSuccess:(ModelBlock)onSuccess
                                  onError:(ErrorBlock)onError
 {
+    NSLog(@"获取产品详细信息");
     CLLocationCoordinate2D coordinate = [Utilities getUserCoordinate];
     NSDictionary *body = @{@"productID":[NSNumber numberWithInteger:product.pid],
                            @"xPoint":[NSNumber numberWithFloat:coordinate.latitude],
@@ -406,6 +407,8 @@
             if(ULI.result){
                 SetUserInfo(ULI.CustomerInfo);
                 onSuccess();
+            }else{
+                NSLog(@"获取用户信息失败");
             }
         } onError:^(NSError *engineError) {
             onError(engineError);
@@ -436,12 +439,16 @@
 }
 
 
-+ (MKNetworkOperation *)resetUserPasswordWithUserAccount:(NSString *)userAccount
-                                           andPasword:(NSString *)password
-                                            onSuccess:(ModelBlock)onSuccess
-                                              onError:(ErrorBlock)onError
++ (MKNetworkOperation *)resetUserPasswordWithUserID:(NSNumber *)userId
+                                      andOldPasword:(NSString *)oldPassword
+                                        newPassword:(NSString *)newPassword
+                                          onSuccess:(ModelBlock)onSuccess
+                                            onError:(ErrorBlock)onError
 {
-    NSDictionary *body = @{@"phoneNo":userAccount, @"pwd":password};
+    
+    NSDictionary *body = @{@"userID":userId,
+                           @"oldPwd":[oldPassword md5],
+                           @"newPwd":[newPassword md5]};
     
     RESTFulEngine *engin = [RESTFulEngine shareInstance];
     MKNetworkOperation *operation = [engin operationWithPath:@"SysService/EditPassword" params:body];

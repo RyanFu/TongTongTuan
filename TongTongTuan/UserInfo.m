@@ -13,6 +13,8 @@
 {
     if([key isEqualToString:@"id"]){
         self.uid = ((NSNumber *)value).integerValue;
+    }else if([key isEqualToString:@"defaultlogistics"]){
+        self.defaultlogistics = [[Logistics alloc] initWithDictionary:value];
     }else{
         [super setValue:value forKey:key];
     }

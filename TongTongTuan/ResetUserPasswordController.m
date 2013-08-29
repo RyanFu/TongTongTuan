@@ -11,6 +11,7 @@
 #import "RESTFulEngine.h"
 #import "UserInfoValidator.h"
 #import "SIAlertView.h"
+#import "AppDelegate.h"
 
 @interface ResetUserPasswordController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *currentPasswordTextField;
@@ -81,28 +82,33 @@
     }
 
     if([newPassword isEqualToString:currentPassword] == YES){
-        [SIAlertView showWithMessage:@"您曾经使用过这个密码，为了账号安全，请重新设置密码" text1:@"关闭" okBlock:^{}];
+        [SIAlertView showWithMessage:@"为了账号安全，新密码不能与旧密码相同" text1:@"关闭" okBlock:^{}];
         return;
     }
 
 #warning 重置密码等待提示
-    [RESTFulEngine resetUserPasswordWithUserAccount:[FXKeychain userAccount]
-                                         andPasword:[FXKeychain userPassword]
-                                          onSuccess:^(JSONModel *aModelBaseObject) {
-          ServerReturnValue *srv = (ServerReturnValue *)aModelBaseObject;
-          if(srv.result){
-              [self.navigationController popViewControllerAnimated:YES];
-          }else{
-              NSString *reason =
-              [NSString stringWithFormat:@"重置密码失败,原因:%@", srv.message];
-              [SIAlertView showWithMessage:reason text1:@"关闭" okBlock:^{}];
-          }
-    } onError:^(NSError *engineError) {
-        NSString *reason =
-        [NSString stringWithFormat:@"重置密码失败,原因:%@", [engineError localizedDescription]];
-        [SIAlertView showWithMessage:reason text1:@"关闭" okBlock:^{}];
-    }];
+    UserInfo *userInfo = GetUserInfo();
+    [RESTFulEngine resetUserPasswordWithUserID:[NSNumber numberWithInteger:userInfo.uid]
+                                 andOldPasword:currentPassword
+                                   newPassword:newPassword
+                                     onSuccess:^(JSONModel *aModelBaseObject) {
+                                            ServerReturnValue *srv = (ServerReturnValue *)aModelBaseObject;
+                                            if(srv.result){
+                                                [FXKeychain updatePassword:newPassword];
+                                                if(self.resetPasswordSuccessfulBlock){
+                                                    self.resetPasswordSuccessfulBlock();
+                                                }
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }else{
+                                                NSString *reason =
+                                                [NSString stringWithFormat:@"重置密码失败,原因:%@", srv.message];
+                                                [SIAlertView showWithMessage:reason text1:@"关闭" okBlock:^{}];
+                                            }
+                                     } onError:^(NSError *engineError) {
+                                            NSString *reason =
+                                            [NSString stringWithFormat:@"重置密码失败,原因:%@", [engineError localizedDescription]];
+                                            [SIAlertView showWithMessage:reason text1:@"关闭" okBlock:^{}];
+                                        }];
 }
-
 
 @end

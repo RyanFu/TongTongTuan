@@ -42,7 +42,9 @@
 - (IBAction)userLogout:(id)sender
 {
     [FXKeychain userLogout];
-    self.userLogoutBlock();
+    if(self.userLogoutBlock){
+        self.userLogoutBlock();
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

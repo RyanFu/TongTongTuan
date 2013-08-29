@@ -110,6 +110,8 @@
 		69D60C5A17C70E5900DFBC80 /* Logistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D60C5917C70E5900DFBC80 /* Logistics.m */; };
 		69D60C5D17C712FA00DFBC80 /* OrderDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D60C5C17C712FA00DFBC80 /* OrderDetail.m */; };
 		69D65AFF1795349400D224CA /* LHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D65AFE1795349300D224CA /* LHTabBarController.m */; };
+		69DAED1817CF2C8300EC439D /* ProductSpecificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 69DAED1717CF2C8300EC439D /* ProductSpecificationCell.m */; };
+		69DAED1A17CF2C9200EC439D /* ProductSpecificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69DAED1917CF2C9200EC439D /* ProductSpecificationCell.xib */; };
 		69DE290717BE17040091A9FB /* scoreStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 69DE290617BE17040091A9FB /* scoreStar@2x.png */; };
 		69DE290A17BE1E020091A9FB /* CommentListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69DE290917BE1E020091A9FB /* CommentListController.m */; };
 		69DE290C17BE1E2C0091A9FB /* CommentListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69DE290B17BE1E2B0091A9FB /* CommentListController.xib */; };
@@ -118,12 +120,8 @@
 		69E7E98617CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98517CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m */; };
 		69E7E98A17CB4B9100F9E338 /* ProductTypeOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */; };
 		69E7E98B17CB4B9100F9E338 /* ProductTypeOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */; };
-		69E7E98F17CB4BA900F9E338 /* PayProductTypeOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98D17CB4BA800F9E338 /* PayProductTypeOrderController.m */; };
-		69E7E99017CB4BA900F9E338 /* PayProductTypeOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E98E17CB4BA800F9E338 /* PayProductTypeOrderController.xib */; };
 		69E7E99417CB4BFB00F9E338 /* ServiceTypeOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */; };
 		69E7E99517CB4BFB00F9E338 /* ServiceTypeOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */; };
-		69E7E99917CB4C0F00F9E338 /* PayOrderTypeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E99717CB4C0F00F9E338 /* PayOrderTypeController.m */; };
-		69E7E99A17CB4C0F00F9E338 /* PayOrderTypeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E99817CB4C0F00F9E338 /* PayOrderTypeController.xib */; };
 		69E7E9A317CB547C00F9E338 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E9A217CB547C00F9E338 /* UserInfo.m */; };
 		69E7E9A617CB5A5300F9E338 /* UserLoginInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E9A517CB5A5300F9E338 /* UserLoginInfo.m */; };
 		E6A8C8D7C5E644339BD2CADB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9456AAC523E4C35B572F846 /* libPods.a */; };
@@ -307,6 +305,9 @@
 		69D65AFD1795349300D224CA /* LHTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTabBarController.h; sourceTree = "<group>"; };
 		69D65AFE1795349300D224CA /* LHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTabBarController.m; sourceTree = "<group>"; };
 		69D65B001795448E00D224CA /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
+		69DAED1617CF2C8300EC439D /* ProductSpecificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductSpecificationCell.h; sourceTree = "<group>"; };
+		69DAED1717CF2C8300EC439D /* ProductSpecificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductSpecificationCell.m; sourceTree = "<group>"; };
+		69DAED1917CF2C9200EC439D /* ProductSpecificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductSpecificationCell.xib; sourceTree = "<group>"; };
 		69DE290617BE17040091A9FB /* scoreStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scoreStar@2x.png"; sourceTree = "<group>"; };
 		69DE290817BE1E020091A9FB /* CommentListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListController.h; sourceTree = "<group>"; };
 		69DE290917BE1E020091A9FB /* CommentListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListController.m; sourceTree = "<group>"; };
@@ -320,15 +321,9 @@
 		69E7E98717CB4B9100F9E338 /* ProductTypeOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTypeOrderController.h; sourceTree = "<group>"; };
 		69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTypeOrderController.m; sourceTree = "<group>"; };
 		69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTypeOrderController.xib; sourceTree = "<group>"; };
-		69E7E98C17CB4BA800F9E338 /* PayProductTypeOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayProductTypeOrderController.h; sourceTree = "<group>"; };
-		69E7E98D17CB4BA800F9E338 /* PayProductTypeOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayProductTypeOrderController.m; sourceTree = "<group>"; };
-		69E7E98E17CB4BA800F9E338 /* PayProductTypeOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayProductTypeOrderController.xib; sourceTree = "<group>"; };
 		69E7E99117CB4BFB00F9E338 /* ServiceTypeOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceTypeOrderController.h; sourceTree = "<group>"; };
 		69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTypeOrderController.m; sourceTree = "<group>"; };
 		69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ServiceTypeOrderController.xib; sourceTree = "<group>"; };
-		69E7E99617CB4C0F00F9E338 /* PayOrderTypeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayOrderTypeController.h; sourceTree = "<group>"; };
-		69E7E99717CB4C0F00F9E338 /* PayOrderTypeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayOrderTypeController.m; sourceTree = "<group>"; };
-		69E7E99817CB4C0F00F9E338 /* PayOrderTypeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayOrderTypeController.xib; sourceTree = "<group>"; };
 		69E7E9A117CB547C00F9E338 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		69E7E9A217CB547C00F9E338 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		69E7E9A417CB5A5300F9E338 /* UserLoginInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginInfo.h; sourceTree = "<group>"; };
@@ -694,36 +689,17 @@
 		69BDC90917C5A1C500C5B8C7 /* Order */ = {
 			isa = PBXGroup;
 			children = (
-				69BDC90B17C5A1E200C5B8C7 /* ServiceType */,
-				69BDC90A17C5A1D200C5B8C7 /* ProductType */,
-			);
-			name = Order;
-			sourceTree = "<group>";
-		};
-		69BDC90A17C5A1D200C5B8C7 /* ProductType */ = {
-			isa = PBXGroup;
-			children = (
 				69E7E98717CB4B9100F9E338 /* ProductTypeOrderController.h */,
 				69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */,
 				69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */,
-				69E7E98C17CB4BA800F9E338 /* PayProductTypeOrderController.h */,
-				69E7E98D17CB4BA800F9E338 /* PayProductTypeOrderController.m */,
-				69E7E98E17CB4BA800F9E338 /* PayProductTypeOrderController.xib */,
-			);
-			name = ProductType;
-			sourceTree = "<group>";
-		};
-		69BDC90B17C5A1E200C5B8C7 /* ServiceType */ = {
-			isa = PBXGroup;
-			children = (
 				69E7E99117CB4BFB00F9E338 /* ServiceTypeOrderController.h */,
 				69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */,
 				69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */,
-				69E7E99617CB4C0F00F9E338 /* PayOrderTypeController.h */,
-				69E7E99717CB4C0F00F9E338 /* PayOrderTypeController.m */,
-				69E7E99817CB4C0F00F9E338 /* PayOrderTypeController.xib */,
+				69DAED1617CF2C8300EC439D /* ProductSpecificationCell.h */,
+				69DAED1717CF2C8300EC439D /* ProductSpecificationCell.m */,
+				69DAED1917CF2C9200EC439D /* ProductSpecificationCell.xib */,
 			);
-			name = ServiceType;
+			name = Order;
 			sourceTree = "<group>";
 		};
 		69C2EE831797D9DF004C471E /* RESTFul */ = {
@@ -911,13 +887,12 @@
 				69DE290C17BE1E2C0091A9FB /* CommentListController.xib in Resources */,
 				6927B51217C1A688001AD221 /* ProductDetailInfoController.xib in Resources */,
 				69E7E98B17CB4B9100F9E338 /* ProductTypeOrderController.xib in Resources */,
-				69E7E99017CB4BA900F9E338 /* PayProductTypeOrderController.xib in Resources */,
 				69E7E99517CB4BFB00F9E338 /* ServiceTypeOrderController.xib in Resources */,
-				69E7E99A17CB4C0F00F9E338 /* PayOrderTypeController.xib in Resources */,
 				697072D317CC358A00C64C72 /* UserProfileController.xib in Resources */,
 				697072D817CC4B2F00C64C72 /* UserLoginController.xib in Resources */,
 				698BEC1217CDDDC000394138 /* UserAccountSettingController.xib in Resources */,
 				698BEC1717CDEFCB00394138 /* ResetUserPasswordController.xib in Resources */,
+				69DAED1A17CF2C9200EC439D /* ProductSpecificationCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1038,9 +1013,7 @@
 				69E7E98317CB358F00F9E338 /* OrderInfoModel.m in Sources */,
 				69E7E98617CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m in Sources */,
 				69E7E98A17CB4B9100F9E338 /* ProductTypeOrderController.m in Sources */,
-				69E7E98F17CB4BA900F9E338 /* PayProductTypeOrderController.m in Sources */,
 				69E7E99417CB4BFB00F9E338 /* ServiceTypeOrderController.m in Sources */,
-				69E7E99917CB4C0F00F9E338 /* PayOrderTypeController.m in Sources */,
 				69E7E9A317CB547C00F9E338 /* UserInfo.m in Sources */,
 				69E7E9A617CB5A5300F9E338 /* UserLoginInfo.m in Sources */,
 				697072D217CC358A00C64C72 /* UserProfileController.m in Sources */,
@@ -1049,6 +1022,7 @@
 				697072E117CCAB1700C64C72 /* NSString+MD5.m in Sources */,
 				698BEC1117CDDDC000394138 /* UserAccountSettingController.m in Sources */,
 				698BEC1617CDEFCB00394138 /* ResetUserPasswordController.m in Sources */,
+				69DAED1817CF2C8300EC439D /* ProductSpecificationCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,5 +15,5 @@
 + (void)userLogout;
 + (BOOL)isUserLogin;
 + (void)saveUserAccount:(NSString *)account andPassword:(NSString *)password;
-
++ (void)updatePassword:(NSString *)password;
 @end

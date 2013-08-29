@@ -9,6 +9,7 @@
 #import "BaseController.h"
 #import "Product.h"
 
+// 商品类订单
 @interface ProductTypeOrderController : BaseController
-@property (nonatomic, copy) Product *product;
+@property (nonatomic, strong) Product *product;
 @end

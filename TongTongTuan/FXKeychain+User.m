@@ -40,4 +40,8 @@ static const NSString *kAccount = @"UserAccount",
     [[FXKeychain defaultKeychain] setObject:password forKey:kPassword];
 }
 
++ (void)updatePassword:(NSString *)password
+{
+    [[FXKeychain defaultKeychain] setObject:password forKey:kPassword];
+}
 @end

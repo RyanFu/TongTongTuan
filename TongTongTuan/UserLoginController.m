@@ -76,7 +76,9 @@
                                    if(v.result == YES){ // 登陆成功
                                        [FXKeychain saveUserAccount:userName andPassword:userPasword];
                                        SetUserInfo(v.CustomerInfo);
-                                       self.loginBlock(YES);
+                                       if(self.loginBlock){
+                                           self.loginBlock(YES);
+                                       }
                                        [self dismiss:nil];
                                    }else{
                                        NSString *message = [NSString stringWithFormat:@"登陆失败,原因:%@",v.message];

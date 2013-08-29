@@ -85,7 +85,14 @@
     
     ProductDetailController *PD = [[ProductDetailController alloc] initWithNibName:@"ProductDetailController" bundle:nil];
     [self.navigationController pushViewController:PD animated:YES];
-    PD.product =  self.productListArray[indexPath.row];
+    
+    // 延迟执行 否则会导致界面卡顿
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+         PD.product =  self.productListArray[indexPath.row];
+    });
+   
 }
 
 

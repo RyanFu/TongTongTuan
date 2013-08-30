@@ -107,6 +107,7 @@
 		69BDC91B17C5AD0A00C5B8C7 /* ServerReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 69BDC91A17C5AD0A00C5B8C7 /* ServerReturnValue.m */; };
 		69C2EE821797D80F004C471E /* ProductType.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C2EE811797D80F004C471E /* ProductType.m */; };
 		69C2EE861797DA12004C471E /* RESTFulEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C2EE851797DA12004C471E /* RESTFulEngine.m */; };
+		69CE11CB17D0751B00015EB7 /* Postage.m in Sources */ = {isa = PBXBuildFile; fileRef = 69CE11CA17D0751B00015EB7 /* Postage.m */; };
 		69D60C5A17C70E5900DFBC80 /* Logistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D60C5917C70E5900DFBC80 /* Logistics.m */; };
 		69D60C5D17C712FA00DFBC80 /* OrderDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D60C5C17C712FA00DFBC80 /* OrderDetail.m */; };
 		69D65AFF1795349400D224CA /* LHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D65AFE1795349300D224CA /* LHTabBarController.m */; };
@@ -298,6 +299,8 @@
 		69C2EE811797D80F004C471E /* ProductType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductType.m; sourceTree = "<group>"; };
 		69C2EE841797DA12004C471E /* RESTFulEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTFulEngine.h; sourceTree = "<group>"; };
 		69C2EE851797DA12004C471E /* RESTFulEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTFulEngine.m; sourceTree = "<group>"; };
+		69CE11C917D0751B00015EB7 /* Postage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Postage.h; sourceTree = "<group>"; };
+		69CE11CA17D0751B00015EB7 /* Postage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Postage.m; sourceTree = "<group>"; };
 		69D60C5817C70E5900DFBC80 /* Logistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logistics.h; sourceTree = "<group>"; };
 		69D60C5917C70E5900DFBC80 /* Logistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logistics.m; sourceTree = "<group>"; };
 		69D60C5B17C712FA00DFBC80 /* OrderDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetail.h; sourceTree = "<group>"; };
@@ -724,6 +727,8 @@
 				69E7E97F17CB2F3000F9E338 /* OrderVerifyCode.m */,
 				69E7E98117CB358F00F9E338 /* OrderInfoModel.h */,
 				69E7E98217CB358F00F9E338 /* OrderInfoModel.m */,
+				69CE11C917D0751B00015EB7 /* Postage.h */,
+				69CE11CA17D0751B00015EB7 /* Postage.m */,
 			);
 			name = Order;
 			sourceTree = "<group>";
@@ -1023,6 +1028,7 @@
 				698BEC1117CDDDC000394138 /* UserAccountSettingController.m in Sources */,
 				698BEC1617CDEFCB00394138 /* ResetUserPasswordController.m in Sources */,
 				69DAED1817CF2C8300EC439D /* ProductSpecificationCell.m in Sources */,
+				69CE11CB17D0751B00015EB7 /* Postage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

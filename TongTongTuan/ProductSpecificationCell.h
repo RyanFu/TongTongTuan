@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^AddOrSubBlock)(NSInteger tag);
+@class ProductSpecificationCell;
+
+typedef void (^AddOrSubBlock)(ProductSpecificationCell *cell);
 
 @interface ProductSpecificationCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *quantityTextField;
+@property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
 @property (nonatomic, copy) AddOrSubBlock addBlock, subBlock;
 @end

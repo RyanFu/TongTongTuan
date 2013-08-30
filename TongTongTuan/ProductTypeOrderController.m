@@ -8,6 +8,13 @@
 
 #import "ProductTypeOrderController.h"
 #import "ProductSpecificationCell.h"
+#import "ProductSpecification.h"
+#import "UserInfo.h"
+#import "FXKeychain+User.h"
+#import "AppDelegate.h"
+#import "SIAlertView.h"
+
+AddOrSubBlock addBlock, subBlock;
 
 @interface ProductTypeOrderController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -32,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *refundImageView2;
 
 @property (assign, nonatomic) NSInteger numberOfRow;
+@property (assign, nonatomic) NSInteger sum; //购买商品总数
+@property (strong, nonatomic) UserInfo *userInfo;
 @end
 
 @implementation ProductTypeOrderController
@@ -41,6 +50,52 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"商品类";
+        self.sum = 0;
+        
+        // 增加购买商品数量
+        addBlock = ^(ProductSpecificationCell *cell){
+            // 购买商品总数大于此商品限够个数
+            // 注:pay_max为0代表不限制购买数量
+            if(self.product.pay_max != 0 && self.sum >= self.product.pay_max){ 
+                NSString *message = [NSString stringWithFormat:@"此商品最多只允许购买%d个", self.sum];
+                [SIAlertView showWithMessage:message text1:@"关闭" okBlock:^{}];
+                return;
+            }
+            
+            NSInteger i =  cell.quantityTextField.text.integerValue;
+            ProductSpecification *ps = self.product.prospecs[cell.tag];
+            if(i < ps.storeqty){ // 每个规格商品的购买数必须小于此规格商品的库存数
+                i++;
+                self.sum++;
+                cell.quantityTextField.text = [NSString stringWithFormat:@"%d",i];
+                
+                [self.tableView reloadData];
+            }else{
+                NSString *message = [NSString stringWithFormat:@"此规格的产品最多只能购买%d个",ps.storeqty];
+                [SIAlertView showWithMessage:message text1:@"关闭" okBlock:^{}];
+            }
+        };
+        
+        // 减少购买商品数量
+        subBlock = ^(ProductSpecificationCell *cell){
+            if(self.sum == 1){ 
+                [SIAlertView showWithMessage:@"亲，至少必须选择一个商品🎁" text1:@"关闭" okBlock:^{}];
+                return;
+            }
+            
+            NSInteger i =  cell.quantityTextField.text.integerValue;
+            if(i > 0){
+                i--;
+                self.sum--;
+                cell.quantityTextField.text = [NSString stringWithFormat:@"%d",i];
+                cell.leftButton.enabled = YES;
+                if(i == 0){
+                    cell.leftButton.enabled = NO;
+                }
+                
+                [self.tableView reloadData];
+            }
+        };
     }
     return self;
 }
@@ -50,6 +105,9 @@
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"ProductSpecificationCell" bundle:nil]
          forCellReuseIdentifier:@"ProductSpecificationCell"];
+    
+    NSAssert([FXKeychain isUserLogin], @"未登陆，必须先登陆");
+    self.userInfo = GetUserInfo();
 }
 
 - (void)setScrollViewContentSize:(UIScrollView *)scrollView
@@ -113,8 +171,21 @@
     UITableViewCell *cell = nil;
     
     if(indexPath.row > 0 && indexPath.row < self.numberOfRow - 3){
-        ProductSpecificationCell *pcell = [self.tableView dequeueReusableCellWithIdentifier:@"ProductSpecificationCell"];
+        ProductSpecificationCell *pcell = [self.tableView
+                                           dequeueReusableCellWithIdentifier:@"ProductSpecificationCell"];
+        pcell.addBlock = addBlock;
+        pcell.subBlock = subBlock;
+        
+        NSInteger i = indexPath.row - 1;
+        ProductSpecification *ps = self.product.prospecs[i];
+        pcell.tag = i;  // 在addBlock和subBlock里面将使用此值来访问self.product.prospecs[i];
+        pcell.nameLabel.text = ps.specname;
+        
+        NSInteger q = pcell.quantityTextField.text.integerValue;
+        pcell.quantityTextField.text = [NSString stringWithFormat:@"%d", q];
+        pcell.leftButton.enabled = (q == 0 ? NO : YES);
         cell = pcell;
+        
     }else{
         static NSString *identifier = @"cellIdentifier";
         cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
@@ -125,15 +196,27 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
+        CGFloat price;
+        if(self.userInfo.usertype > 1){ // 会员
+            price = self.product.price_member;
+        }else{  // 普通会员(注册了，但没交钱开通的账户)
+            price = self.product.price_nomember;
+        }
+        
         if(indexPath.row == 0){
             cell.textLabel.text = @"单价:";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@""];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.1f",price];
         }else if(indexPath.row == self.numberOfRow - 3){
-            cell.textLabel.text = @"小计:";
+            cell.textLabel.text = @"小计";
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.1f", self.sum * price];
         }else if(indexPath.row == self.numberOfRow - 2){
             cell.textLabel.text = @"运费:";
-        }else if(indexPath.row == self.numberOfRow - 1){  
-            cell.textLabel.text = @"总价:";
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.1f",self.product.postage.postage];
+        }else if(indexPath.row == self.numberOfRow - 1){
+            // 总价=购买商品数量 x 单价 - 邮费
+            CGFloat p = (self.sum * price) - self.product.postage.postage;
+            cell.textLabel.text = @"总价";
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.1f", p];
         }
     }
     

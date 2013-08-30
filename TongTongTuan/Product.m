@@ -30,6 +30,8 @@
             [self.prospecs addObject:[[ProductSpecification alloc] initWithDictionary:dic]];
         }
         
+    }else if([key isEqualToString:@"postage"]){
+        self.postage = [[Postage alloc] initWithDictionary:value];
     }else{
         [super setValue:value forKey:key];
     }
@@ -47,5 +49,6 @@
     self.prospecs = [p.prospecs copy];
     self.distance = p.distance;
     self.pro_model = p.pro_model;
+    self.pay_max = p.pay_max;
 }
 @end

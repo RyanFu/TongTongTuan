@@ -7,6 +7,7 @@
 //
 
 #import "JSONModel.h"
+#import "Postage.h"
 
 @interface Product : JSONModel
 @property (nonatomic, copy)   NSString     *area_city;
@@ -25,7 +26,7 @@
 @property (nonatomic, assign) NSInteger    pid;
 @property (nonatomic, copy)   NSString     *keyword;
 @property (nonatomic, assign) NSInteger    orderproqty;
-@property (nonatomic, assign) NSInteger    pay_max;
+@property (nonatomic, assign) NSInteger    pay_max;         // 可以购买此商品的最大个数,0代表不限制购买
 @property (nonatomic, assign) NSInteger    pay_min;
 @property (nonatomic, assign) NSInteger    paytype;
 @property (nonatomic, assign) NSInteger    preferential;
@@ -62,6 +63,7 @@
 @property (nonatomic, assign) BOOL         isLoadedDetail;  // 是否载入过产品详情,默认No没有载入，YES载入过.
 @property (nonatomic, strong) NSMutableArray *commentList;  // 评论列表
 @property (nonatomic, strong) NSMutableArray *prospecs;     // 产品规格
+@property (nonatomic, strong) Postage        *postage;      // 邮实体
 
 - (void)copyDetailInfoToSelf:(Product *)p;
 @end

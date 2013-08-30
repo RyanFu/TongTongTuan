@@ -30,14 +30,14 @@
 - (IBAction)add:(UIButton *)sender
 {
     if(self.addBlock){
-        self.addBlock(self.tag);
+        self.addBlock(self);
     }
 }
 
 - (IBAction)sub:(UIButton *)sender
 {
     if(self.subBlock){
-        self.subBlock(self.tag);
+        self.subBlock(self);
     }
 }
 

@@ -104,6 +104,7 @@
 		699CD82E1793C025001CB630 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 699CD8091793C024001CB630 /* Foundation.framework */; };
 		699CD8361793C025001CB630 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 699CD8341793C025001CB630 /* InfoPlist.strings */; };
 		699CD8391793C025001CB630 /* TongTongTuanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 699CD8381793C025001CB630 /* TongTongTuanTests.m */; };
+		69AA248217D431D400329A01 /* LHActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AA248117D431D400329A01 /* LHActionView.m */; };
 		69BDC91B17C5AD0A00C5B8C7 /* ServerReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 69BDC91A17C5AD0A00C5B8C7 /* ServerReturnValue.m */; };
 		69C2EE821797D80F004C471E /* ProductType.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C2EE811797D80F004C471E /* ProductType.m */; };
 		69C2EE861797DA12004C471E /* RESTFulEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C2EE851797DA12004C471E /* RESTFulEngine.m */; };
@@ -119,10 +120,8 @@
 		69E7E98017CB2F3000F9E338 /* OrderVerifyCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E97F17CB2F3000F9E338 /* OrderVerifyCode.m */; };
 		69E7E98317CB358F00F9E338 /* OrderInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98217CB358F00F9E338 /* OrderInfoModel.m */; };
 		69E7E98617CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98517CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m */; };
-		69E7E98A17CB4B9100F9E338 /* ProductTypeOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */; };
-		69E7E98B17CB4B9100F9E338 /* ProductTypeOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */; };
-		69E7E99417CB4BFB00F9E338 /* ServiceTypeOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */; };
-		69E7E99517CB4BFB00F9E338 /* ServiceTypeOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */; };
+		69E7E98A17CB4B9100F9E338 /* OrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E98817CB4B9100F9E338 /* OrderController.m */; };
+		69E7E98B17CB4B9100F9E338 /* OrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E7E98917CB4B9100F9E338 /* OrderController.xib */; };
 		69E7E9A317CB547C00F9E338 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E9A217CB547C00F9E338 /* UserInfo.m */; };
 		69E7E9A617CB5A5300F9E338 /* UserLoginInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E7E9A517CB5A5300F9E338 /* UserLoginInfo.m */; };
 		E6A8C8D7C5E644339BD2CADB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9456AAC523E4C35B572F846 /* libPods.a */; };
@@ -293,6 +292,8 @@
 		699CD8351793C025001CB630 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		699CD8371793C025001CB630 /* TongTongTuanTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TongTongTuanTests.h; sourceTree = "<group>"; };
 		699CD8381793C025001CB630 /* TongTongTuanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TongTongTuanTests.m; sourceTree = "<group>"; };
+		69AA248017D431D400329A01 /* LHActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHActionView.h; sourceTree = "<group>"; };
+		69AA248117D431D400329A01 /* LHActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHActionView.m; sourceTree = "<group>"; };
 		69BDC91917C5AD0A00C5B8C7 /* ServerReturnValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerReturnValue.h; sourceTree = "<group>"; };
 		69BDC91A17C5AD0A00C5B8C7 /* ServerReturnValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerReturnValue.m; sourceTree = "<group>"; };
 		69C2EE801797D80F004C471E /* ProductType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductType.h; sourceTree = "<group>"; };
@@ -321,12 +322,9 @@
 		69E7E98217CB358F00F9E338 /* OrderInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoModel.m; sourceTree = "<group>"; };
 		69E7E98417CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DictionaryWithObject.h"; sourceTree = "<group>"; };
 		69E7E98517CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DictionaryWithObject.m"; sourceTree = "<group>"; };
-		69E7E98717CB4B9100F9E338 /* ProductTypeOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTypeOrderController.h; sourceTree = "<group>"; };
-		69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTypeOrderController.m; sourceTree = "<group>"; };
-		69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTypeOrderController.xib; sourceTree = "<group>"; };
-		69E7E99117CB4BFB00F9E338 /* ServiceTypeOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceTypeOrderController.h; sourceTree = "<group>"; };
-		69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTypeOrderController.m; sourceTree = "<group>"; };
-		69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ServiceTypeOrderController.xib; sourceTree = "<group>"; };
+		69E7E98717CB4B9100F9E338 /* OrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderController.h; sourceTree = "<group>"; };
+		69E7E98817CB4B9100F9E338 /* OrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderController.m; sourceTree = "<group>"; };
+		69E7E98917CB4B9100F9E338 /* OrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderController.xib; sourceTree = "<group>"; };
 		69E7E9A117CB547C00F9E338 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		69E7E9A217CB547C00F9E338 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		69E7E9A417CB5A5300F9E338 /* UserLoginInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginInfo.h; sourceTree = "<group>"; };
@@ -530,6 +528,7 @@
 		692FB101179691A800FB26E9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				69AA247F17D4319200329A01 /* LHActionView */,
 				698C623517BDCCF300E8C752 /* CommentListView */,
 				690C2F0E179CB757000CBD72 /* ProductListView */,
 				699672DD17991AF3000C6106 /* ProductListTopMenu */,
@@ -689,15 +688,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		69AA247F17D4319200329A01 /* LHActionView */ = {
+			isa = PBXGroup;
+			children = (
+				69AA248017D431D400329A01 /* LHActionView.h */,
+				69AA248117D431D400329A01 /* LHActionView.m */,
+			);
+			name = LHActionView;
+			sourceTree = "<group>";
+		};
 		69BDC90917C5A1C500C5B8C7 /* Order */ = {
 			isa = PBXGroup;
 			children = (
-				69E7E98717CB4B9100F9E338 /* ProductTypeOrderController.h */,
-				69E7E98817CB4B9100F9E338 /* ProductTypeOrderController.m */,
-				69E7E98917CB4B9100F9E338 /* ProductTypeOrderController.xib */,
-				69E7E99117CB4BFB00F9E338 /* ServiceTypeOrderController.h */,
-				69E7E99217CB4BFB00F9E338 /* ServiceTypeOrderController.m */,
-				69E7E99317CB4BFB00F9E338 /* ServiceTypeOrderController.xib */,
+				69E7E98717CB4B9100F9E338 /* OrderController.h */,
+				69E7E98817CB4B9100F9E338 /* OrderController.m */,
+				69E7E98917CB4B9100F9E338 /* OrderController.xib */,
 				69DAED1617CF2C8300EC439D /* ProductSpecificationCell.h */,
 				69DAED1717CF2C8300EC439D /* ProductSpecificationCell.m */,
 				69DAED1917CF2C9200EC439D /* ProductSpecificationCell.xib */,
@@ -891,8 +896,7 @@
 				69DE290717BE17040091A9FB /* scoreStar@2x.png in Resources */,
 				69DE290C17BE1E2C0091A9FB /* CommentListController.xib in Resources */,
 				6927B51217C1A688001AD221 /* ProductDetailInfoController.xib in Resources */,
-				69E7E98B17CB4B9100F9E338 /* ProductTypeOrderController.xib in Resources */,
-				69E7E99517CB4BFB00F9E338 /* ServiceTypeOrderController.xib in Resources */,
+				69E7E98B17CB4B9100F9E338 /* OrderController.xib in Resources */,
 				697072D317CC358A00C64C72 /* UserProfileController.xib in Resources */,
 				697072D817CC4B2F00C64C72 /* UserLoginController.xib in Resources */,
 				698BEC1217CDDDC000394138 /* UserAccountSettingController.xib in Resources */,
@@ -1017,8 +1021,7 @@
 				69E7E98017CB2F3000F9E338 /* OrderVerifyCode.m in Sources */,
 				69E7E98317CB358F00F9E338 /* OrderInfoModel.m in Sources */,
 				69E7E98617CB39AB00F9E338 /* NSDictionary+DictionaryWithObject.m in Sources */,
-				69E7E98A17CB4B9100F9E338 /* ProductTypeOrderController.m in Sources */,
-				69E7E99417CB4BFB00F9E338 /* ServiceTypeOrderController.m in Sources */,
+				69E7E98A17CB4B9100F9E338 /* OrderController.m in Sources */,
 				69E7E9A317CB547C00F9E338 /* UserInfo.m in Sources */,
 				69E7E9A617CB5A5300F9E338 /* UserLoginInfo.m in Sources */,
 				697072D217CC358A00C64C72 /* UserProfileController.m in Sources */,
@@ -1029,6 +1032,7 @@
 				698BEC1617CDEFCB00394138 /* ResetUserPasswordController.m in Sources */,
 				69DAED1817CF2C8300EC439D /* ProductSpecificationCell.m in Sources */,
 				69CE11CB17D0751B00015EB7 /* Postage.m in Sources */,
+				69AA248217D431D400329A01 /* LHActionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

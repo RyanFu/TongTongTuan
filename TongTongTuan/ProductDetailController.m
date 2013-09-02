@@ -12,8 +12,7 @@
 #import "CommentListView.h"
 #import "CommentListController.h"
 #import "ProductDetailInfoController.h"
-#import "ServiceTypeOrderController.h"
-#import "ProductTypeOrderController.h"
+#import "OrderController.h"
 #import "FXKeychain+User.h"
 #import "UserLoginController.h"
 
@@ -185,31 +184,10 @@ static const CGFloat lMargin = 10.0,
 - (IBAction)buyNow:(id)sender
 {
     void (^TempBlock)(void) = ^(void){
-        switch(self.product.pro_model){
-            case 1: //商品类
-            {
-                ProductTypeOrderController *PTOC =
-                [[ProductTypeOrderController alloc] initWithNibName:@"ProductTypeOrderController" bundle:nil];
-                [self.navigationController pushViewController:PTOC animated:YES];
-                PTOC.product = self.product;
-                break;
-            }
-            case 2: // 生活服务类
-            {
-                ServiceTypeOrderController *STOC =
-                [[ServiceTypeOrderController alloc] initWithNibName:@"ServiceTypeOrderController" bundle:nil];
-                [self.navigationController pushViewController:STOC animated:YES];
-                STOC.product = self.product;
-                break;
-            }
-                
-            case 3: // 优惠券
-                break;
-                
-            default:
-                [SIAlertView showWithMessage:@"抱歉，商品类别数据发生错误!" text1:@"关闭" okBlock:^{}];
-                break;
-        }
+        OrderController *PTOC =
+        [[OrderController alloc] initWithNibName:@"OrderController" bundle:nil ProductT:self.product.pro_model];
+        [self.navigationController pushViewController:PTOC animated:YES];
+        PTOC.product = self.product;
     };
     
     if([FXKeychain isUserLogin]){

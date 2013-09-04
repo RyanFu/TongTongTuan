@@ -16,7 +16,7 @@ BOOL valid(NSString *validateObj, NSString *regEx)
 }
 
 
-+ (BOOL)validMobileNumber:(NSString*)mobileNum
++ (BOOL)isValidMobileNumber:(NSString*)mobileNum
 {
     /* 手机号
      * 移动：134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188
@@ -68,13 +68,13 @@ BOOL valid(NSString *validateObj, NSString *regEx)
 }
 
 
-+ (BOOL)validEmail:(NSString *)email
++ (BOOL)isValidEmail:(NSString *)email
 {
     return valid(email, @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
 }
 
 
-+  (BOOL)validZipCode:(NSString *)zipCode
++  (BOOL)isValidZipCode:(NSString *)zipCode
 {
     return valid(zipCode, @"[1-9]\\d{5}(?!\\d)");
 }

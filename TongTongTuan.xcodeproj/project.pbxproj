@@ -43,6 +43,7 @@
 		690D675D17C702FF0078351F /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 690D675C17C702FF0078351F /* Order.m */; };
 		690FF9E817C31BFB009C8F50 /* FXKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 690FF9E717C31BFB009C8F50 /* FXKeychain.m */; };
 		690FF9EC17C31C52009C8F50 /* FXKeychain+User.m in Sources */ = {isa = PBXBuildFile; fileRef = 690FF9EB17C31C52009C8F50 /* FXKeychain+User.m */; };
+		6916507F17D7344C0099871E /* UIScrollView+ContentSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6916507E17D7344C0099871E /* UIScrollView+ContentSize.m */; };
 		691F527B17BC6F77005BE5FD /* ProductDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 691F527A17BC6F77005BE5FD /* ProductDetailController.xib */; };
 		691F527F17BC825D005BE5FD /* apple.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 691F527E17BC825D005BE5FD /* apple.jpg */; };
 		691F528217BCD46D005BE5FD /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 691F528117BCD46D005BE5FD /* Comment.m */; };
@@ -104,6 +105,10 @@
 		699CD82E1793C025001CB630 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 699CD8091793C024001CB630 /* Foundation.framework */; };
 		699CD8361793C025001CB630 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 699CD8341793C025001CB630 /* InfoPlist.strings */; };
 		699CD8391793C025001CB630 /* TongTongTuanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 699CD8381793C025001CB630 /* TongTongTuanTests.m */; };
+		69A2912717D5948800F2BC40 /* NewShippingAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A2912517D5948800F2BC40 /* NewShippingAddress.m */; };
+		69A2912817D5948800F2BC40 /* NewShippingAddress.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69A2912617D5948800F2BC40 /* NewShippingAddress.xib */; };
+		69A2912C17D594C500F2BC40 /* ShippingAddressList.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A2912A17D594C500F2BC40 /* ShippingAddressList.m */; };
+		69A2912D17D594C500F2BC40 /* ShippingAddressList.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69A2912B17D594C500F2BC40 /* ShippingAddressList.xib */; };
 		69AA248217D431D400329A01 /* LHActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AA248117D431D400329A01 /* LHActionView.m */; };
 		69BDC91B17C5AD0A00C5B8C7 /* ServerReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 69BDC91A17C5AD0A00C5B8C7 /* ServerReturnValue.m */; };
 		69C2EE821797D80F004C471E /* ProductType.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C2EE811797D80F004C471E /* ProductType.m */; };
@@ -201,6 +206,8 @@
 		690FF9E717C31BFB009C8F50 /* FXKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXKeychain.m; sourceTree = "<group>"; };
 		690FF9EA17C31C52009C8F50 /* FXKeychain+User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FXKeychain+User.h"; sourceTree = "<group>"; };
 		690FF9EB17C31C52009C8F50 /* FXKeychain+User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FXKeychain+User.m"; sourceTree = "<group>"; };
+		6916507D17D7344C0099871E /* UIScrollView+ContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+ContentSize.h"; sourceTree = "<group>"; };
+		6916507E17D7344C0099871E /* UIScrollView+ContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+ContentSize.m"; sourceTree = "<group>"; };
 		691F527A17BC6F77005BE5FD /* ProductDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductDetailController.xib; sourceTree = "<group>"; };
 		691F527E17BC825D005BE5FD /* apple.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = apple.jpg; sourceTree = "<group>"; };
 		691F528017BCD46D005BE5FD /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
@@ -292,6 +299,12 @@
 		699CD8351793C025001CB630 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		699CD8371793C025001CB630 /* TongTongTuanTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TongTongTuanTests.h; sourceTree = "<group>"; };
 		699CD8381793C025001CB630 /* TongTongTuanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TongTongTuanTests.m; sourceTree = "<group>"; };
+		69A2912417D5948800F2BC40 /* NewShippingAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewShippingAddress.h; sourceTree = "<group>"; };
+		69A2912517D5948800F2BC40 /* NewShippingAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewShippingAddress.m; sourceTree = "<group>"; };
+		69A2912617D5948800F2BC40 /* NewShippingAddress.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewShippingAddress.xib; sourceTree = "<group>"; };
+		69A2912917D594C500F2BC40 /* ShippingAddressList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingAddressList.h; sourceTree = "<group>"; };
+		69A2912A17D594C500F2BC40 /* ShippingAddressList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingAddressList.m; sourceTree = "<group>"; };
+		69A2912B17D594C500F2BC40 /* ShippingAddressList.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShippingAddressList.xib; sourceTree = "<group>"; };
 		69AA248017D431D400329A01 /* LHActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHActionView.h; sourceTree = "<group>"; };
 		69AA248117D431D400329A01 /* LHActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHActionView.m; sourceTree = "<group>"; };
 		69BDC91917C5AD0A00C5B8C7 /* ServerReturnValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerReturnValue.h; sourceTree = "<group>"; };
@@ -452,6 +465,8 @@
 				697072DA17CC7DB300C64C72 /* UserInfoValidator.m */,
 				697072DF17CCAB1700C64C72 /* NSString+MD5.h */,
 				697072E017CCAB1700C64C72 /* NSString+MD5.m */,
+				6916507D17D7344C0099871E /* UIScrollView+ContentSize.h */,
+				6916507E17D7344C0099871E /* UIScrollView+ContentSize.m */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -566,6 +581,12 @@
 				698BEC1317CDEFCA00394138 /* ResetUserPasswordController.h */,
 				698BEC1417CDEFCA00394138 /* ResetUserPasswordController.m */,
 				698BEC1517CDEFCA00394138 /* ResetUserPasswordController.xib */,
+				69A2912417D5948800F2BC40 /* NewShippingAddress.h */,
+				69A2912517D5948800F2BC40 /* NewShippingAddress.m */,
+				69A2912617D5948800F2BC40 /* NewShippingAddress.xib */,
+				69A2912917D594C500F2BC40 /* ShippingAddressList.h */,
+				69A2912A17D594C500F2BC40 /* ShippingAddressList.m */,
+				69A2912B17D594C500F2BC40 /* ShippingAddressList.xib */,
 			);
 			name = UserAccountSetting;
 			sourceTree = "<group>";
@@ -902,6 +923,8 @@
 				698BEC1217CDDDC000394138 /* UserAccountSettingController.xib in Resources */,
 				698BEC1717CDEFCB00394138 /* ResetUserPasswordController.xib in Resources */,
 				69DAED1A17CF2C9200EC439D /* ProductSpecificationCell.xib in Resources */,
+				69A2912817D5948800F2BC40 /* NewShippingAddress.xib in Resources */,
+				69A2912D17D594C500F2BC40 /* ShippingAddressList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1033,6 +1056,9 @@
 				69DAED1817CF2C8300EC439D /* ProductSpecificationCell.m in Sources */,
 				69CE11CB17D0751B00015EB7 /* Postage.m in Sources */,
 				69AA248217D431D400329A01 /* LHActionView.m in Sources */,
+				69A2912717D5948800F2BC40 /* NewShippingAddress.m in Sources */,
+				69A2912C17D594C500F2BC40 /* ShippingAddressList.m in Sources */,
+				6916507F17D7344C0099871E /* UIScrollView+ContentSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

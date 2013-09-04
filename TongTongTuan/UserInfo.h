@@ -13,6 +13,7 @@
 @interface UserInfo : JSONModel
 @property (nonatomic, assign) CGFloat   account_balance;      // 账户余额，采用DES加密
 @property (nonatomic, copy)   NSString  *citycode;
+@property (nonatomic, copy)   NSString  *nickname;
 @property (nonatomic, copy)   NSString  *cityname;
 @property (nonatomic, copy)   NSString  *createdate;
 @property (nonatomic, copy)   NSString  *createdatestr;

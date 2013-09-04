@@ -10,11 +10,13 @@
 #import "NSString+MD5.h"
 #import "FXKeychain+User.h"
 #import "AppDelegate.h"
+#import "NSDictionary+DictionaryWithObject.h"
 
 #define kHost @"192.168.1.198:10003"
 #define kProductTypeDataCacheFile @"product_type_data.plist"
 #define kMenuDataCacheFile @"menu_data.plist"
 #define kCityListDataCacheFile @"city_data.plist"
+#define kAreaDataCacheFile @"area_data.plist"
 
 @implementation RESTFulEngine
 + (RESTFulEngine *)shareInstance
@@ -77,11 +79,9 @@
 {
     NSMutableArray *modelDataArray = [NSMutableArray arrayWithContentsOfFile:[RESTFulEngine cacheFilePath:kMenuDataCacheFile]];
     // 若有缓存数据并且数据没有过期则使用缓存数据
-    if(modelDataArray && [RESTFulEngine isCacheStale:kMenuDataCacheFile] == NO)
-    {
+    if(modelDataArray && [RESTFulEngine isCacheStale:kMenuDataCacheFile] == NO){
         NSMutableArray *modelArray = [NSMutableArray new];
-        for(NSMutableDictionary *dic in modelDataArray)
-        {
+        for(NSMutableDictionary *dic in modelDataArray){
             [modelArray addObject:[[Menu alloc] initWithDictionary:dic]];
         }
         onSuccess(modelArray);
@@ -95,14 +95,12 @@
         
         [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
             NSArray *jsonArray = [completedOperation responseJSON];
-            if([jsonArray writeToFile:[RESTFulEngine cacheFilePath:kMenuDataCacheFile] atomically:YES] == NO)
-            {
+            if([jsonArray writeToFile:[RESTFulEngine cacheFilePath:kMenuDataCacheFile] atomically:YES] == NO){
                 NSLog(@"保存产品类别数据失败");
             }
             
             NSMutableArray *modelArray = [NSMutableArray new];
-            for(NSMutableDictionary *dic in jsonArray)
-            {
+            for(NSMutableDictionary *dic in jsonArray){
                 [modelArray addObject:[[Menu alloc] initWithDictionary:dic]];
             }
             onSuccess(modelArray);
@@ -123,8 +121,7 @@
     // 通过GPS定位获得当前的城市名称信息后，需要到保存城市列表的数据容器中查找对应城市的城市代码，而此时有可能城市列表的数据还没有从服务器
     // 端获取，所以在用户第一次使用App时从本地加载城市列表数据以避免上述情况发生
     
-    if([Utilities isFirstLuanchApp] == NO)
-    {
+    if([Utilities isFirstLuanchApp] == NO){
         NSString *path = [[NSBundle mainBundle] pathForResource:@"city_data" ofType:@"plist"];
         NSMutableDictionary *cityListDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:path];
         if(cityListDictionary.count){
@@ -135,8 +132,7 @@
     }
     
     NSMutableDictionary *cityListDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:[RESTFulEngine cacheFilePath:kCityListDataCacheFile]];
-    if(cityListDictionary && [RESTFulEngine isCacheStale:kCityListDataCacheFile])
-    {
+    if(cityListDictionary && [RESTFulEngine isCacheStale:kCityListDataCacheFile]){
         onSuccess(cityListDictionary);
         return nil;
     }else{
@@ -165,6 +161,35 @@
         [engine enqueueOperation:operation forceReload:YES];
         return operation;
     }
+}
+
+
++ (MKNetworkOperation *)getAreaData:(ArrayBlock)onSuccess
+                            onError:(ErrorBlock)onError
+{
+    NSMutableArray *modelDataArray = [NSMutableArray arrayWithContentsOfFile:[RESTFulEngine cacheFilePath:kAreaDataCacheFile]];
+    if(modelDataArray && modelDataArray.count){
+        onSuccess(modelDataArray);
+        return nil;
+    }
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/GetSelectCitys" params:nil];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        NSMutableArray *array = [completedOperation responseJSON];
+        if([array writeToFile:[RESTFulEngine cacheFilePath:kAreaDataCacheFile] atomically:YES] == NO){
+            NSLog(@"保存城市数据失败");
+        }
+        onSuccess(array);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
 }
 
 
@@ -488,6 +513,29 @@
     return operation;
 }
 
++ (MKNetworkOperation *)addNewShippingAddress:(Logistics *)logistics
+                                    onSuccess:(ModelBlock)onSuccess
+                                      onError:(ErrorBlock)onError
+{
+    NSMutableDictionary *body = [NSDictionary dictionaryWithPropertiesOfObject:logistics];
+    NSObject *value = body[@"lId"];
+    [body removeObjectForKey:@"lId"];
+    [body setObject:value forKey:@"id"];
+    
+    RESTFulEngine *engin = [RESTFulEngine shareInstance];
+    MKNetworkOperation *operation = [engin operationWithPath:@"SysService/AddCustomerLogistics" params:body];
+    [operation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        onSuccess([[ServerReturnValue alloc] initWithDictionary:[completedOperation responseJSON]]);
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        LHError(error);
+        onError(error);
+    }];
+    
+    [engin enqueueOperation:operation forceReload:YES];
+    return operation;
+}
 
 // 缓存文件路径
 + (NSString *)cacheFilePath:(NSString *)fileName

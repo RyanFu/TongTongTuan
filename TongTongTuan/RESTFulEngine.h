@@ -37,6 +37,9 @@ typedef void (^ErrorBlock) (NSError* engineError);
 + (MKNetworkOperation *)getCityListOnSuccess:(DictionaryBlock)onSuccess
                                      onError:(ErrorBlock)onError;
 
++ (MKNetworkOperation *)getAreaData:(ArrayBlock)onSuccess
+                            onError:(ErrorBlock)onError;
+
 // 获取商品列表，参数含义可参看接口文档
 + (MKNetworkOperation *)getProductListWithPlatformIdentifier:(NSInteger)pid
                                                        cityId:(NSInteger)cid
@@ -102,6 +105,11 @@ typedef void (^ErrorBlock) (NSError* engineError);
                                         newPassword:(NSString *)newPassword
                                           onSuccess:(ModelBlock)onSuccess
                                             onError:(ErrorBlock)onError;
+
+// 添加收货地址
++ (MKNetworkOperation *)addNewShippingAddress:(Logistics *)logistics
+                                    onSuccess:(ModelBlock)onSuccess
+                                      onError:(ErrorBlock)onError;
 
 // 获取验证码
 // @registerStatus 注册状态 0不检查是否注册 1检查是否注册，根据状态不同，返回的Message不同

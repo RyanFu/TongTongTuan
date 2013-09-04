@@ -14,41 +14,40 @@
 #import "AppDelegate.h"
 #import "SIAlertView.h"
 #import "LHActionView.h"
+#import "UIScrollView+ContentSize.h"
 
 AddOrSubBlock addBlock, subBlock;
 
 @interface OrderController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView      *containerView1;
-@property (weak, nonatomic) IBOutlet UIView      *containerView2;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel     *productNameLabel;
 
-// 收货地址
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
-@property (weak, nonatomic) IBOutlet UILabel *addressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *zipCodeLabel;
-
-// 送货时间
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-// 发货时间,默认为1。此属性值的含义由Logistics.recive_mode字段定义
-@property (assign, nonatomic) NSInteger deliveryTime;
-
-// 配送说明
+@property (weak, nonatomic) IBOutlet UIView      *containerView2;
+@property (weak, nonatomic) IBOutlet UILabel     *nameLabel;        
+@property (weak, nonatomic) IBOutlet UILabel     *phoneNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel     *addressLabel;
+@property (weak, nonatomic) IBOutlet UILabel     *zipCodeLabel;
+@property (weak, nonatomic) IBOutlet UILabel     *dateLabel;
 @property (weak, nonatomic) IBOutlet UITextField *tipsTextField;
-@property (strong, nonatomic) IBOutlet UIView *inputAccessoryView;
+@property (strong, nonatomic) IBOutlet UIView    *inputAccessoryView;
 
-// 随时退款，过期退款
+@property (weak, nonatomic) IBOutlet UIView      *containerView3;
 @property (weak, nonatomic) IBOutlet UIImageView *refundImageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *refundImageView2;
 
+@property (weak, nonatomic) IBOutlet UIView  *containerView4;
+@property (weak, nonatomic) IBOutlet UILabel *bindphoneNumberLabel;
+
+// 发货时间,默认为1。此属性值的含义由Logistics.recive_mode字段定义
+@property (assign, nonatomic) NSInteger deliveryTime;
 @property (assign, nonatomic) NSInteger numberOfRow;
 @property (assign, nonatomic) NSInteger sum; //购买商品总数
-@property (strong, nonatomic) UserInfo *userInfo;
-@property (assign, nonatomic) BOOL tableViewFirstReloadData;
-@property (assign, nonatomic) CGPoint contentOffsetBeforeKeyboardShow;
-@property (assign, nonatomic) ProductT productType;
+@property (strong, nonatomic) UserInfo  *userInfo;
+@property (assign, nonatomic) BOOL      tableViewFirstReloadData;
+@property (assign, nonatomic) CGPoint   contentOffsetBeforeKeyboardShow;
+@property (assign, nonatomic) ProductT  productType;
 @end
 
 
@@ -125,16 +124,19 @@ AddOrSubBlock addBlock, subBlock;
     return self;
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.containerView4.hidden = (self.productType == ProductTProduct);
+    self.containerView2.hidden = (self.productType != ProductTProduct);
+    self.containerView2.tag = 888;
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"ProductSpecificationCell" bundle:nil]
          forCellReuseIdentifier:@"ProductSpecificationCell"];
     
     self.tipsTextField.inputAccessoryView = self.inputAccessoryView;
     
-    NSAssert([FXKeychain isUserLogin], @"未登陆，必须先登陆");
     self.userInfo = GetUserInfo();
 }
 
@@ -147,14 +149,6 @@ AddOrSubBlock addBlock, subBlock;
     [self.tableView reloadData];
 }
 
-- (void)setScrollViewContentSize:(UIScrollView *)scrollView
-{
-    CGRect contentSize = CGRectZero;
-    for (UIView *subview in scrollView.subviews) {
-        contentSize = CGRectUnion(contentSize, subview.frame);
-    }
-    scrollView.contentSize = contentSize.size;
-}
 
 - (void)setProduct:(Product *)product
 {
@@ -166,7 +160,7 @@ AddOrSubBlock addBlock, subBlock;
         self.numberOfRow = 2 + product.prospecs.count; // 2为必须出现的表单元，包括单价，总价
     }else{
         self.numberOfRow = 3;                          // 3位必须出现的表单元，包括单价，数量，总价
-        self.sum = product.prospecs.count;  // 若为优惠券订单，那么商品数量定义产品规格的数量
+        self.sum = product.prospecs.count;  // 若为优惠券订单，那么商品数量为产品规格的数量
     }
     
     [self.tableView reloadData];
@@ -174,6 +168,7 @@ AddOrSubBlock addBlock, subBlock;
     self.productNameLabel.text = self.product.protitle;
     self.nameLabel.text = self.userInfo.defaultlogistics.recive_man;
     self.phoneNumberLabel.text = self.userInfo.defaultlogistics.recive_phone;
+    self.bindphoneNumberLabel.text = self.userInfo.defaultlogistics.recive_phone;
     self.addressLabel.text = self.userInfo.defaultlogistics.recive_address;
     //self.zipCodeLabel.text = self.userInfo.defaultlogistics.
     
@@ -191,15 +186,36 @@ AddOrSubBlock addBlock, subBlock;
     CGRect f1 = self.containerView1.frame;
     CGSize size = self.tableView.contentSize;
     f1.size.height = size.height + 29;  // 29为tableView顶部与容器1的间距
-    
-    CGRect f2 = self.containerView2.frame;
-    f2.origin.y = f1.origin.y + f1.size.height + 16; // 16为容器1和容器2之前的间距
-    
     self.containerView1.frame = f1;
-    self.containerView2.frame = f2;
+
+    #define Margin 8
     
-    [self setScrollViewContentSize:(UIScrollView *)self.view];
+    CGRect f2;
+    if(self.productType == ProductTProduct){
+        f2 = self.containerView2.frame;
+        f2.origin.y = f1.origin.y + f1.size.height + Margin; // 8为容器1和容器2之前的间距
+        self.containerView2.frame = f2;
+    }else{
+        f2 = self.containerView4.frame;
+        f2.origin.y = f1.origin.y + f1.size.height + Margin;
+        // 容器2比容器4高度高，这样在调用setScrollViewContentSize:计算UIScrollView的高度时会
+        // 得出错误得结果，因为此时容器2时隐藏状态，不应该将其高度加进来。所以根据setScrollViewContentSize:
+        // 中的算法，这里把容器而的bounds值设为0，这样就可忽略掉容器2了。
+        self.containerView2.frame = CGRectZero;
+        self.containerView4.frame = f2;
+    }
+    
+    CGRect f3 = self.containerView3.frame;
+    f3.origin.y = f2.origin.y + f2.size.height + Margin;
+    self.containerView3.frame = f3;
+    
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    [UIScrollView setScrollViewContentSize:scrollView];
+    if(scrollView.bounds.size.height == scrollView.contentSize.height){
+        scrollView.scrollEnabled = NO;
+    }
 }
+
 
 // 选择收货日期
 - (IBAction)selectReceiptDateLabel:(id)sender
@@ -214,6 +230,12 @@ AddOrSubBlock addBlock, subBlock;
 
 // 提交订单
 - (IBAction)submitOrder:(id)sender
+{
+    
+}
+
+// 绑定新号
+- (IBAction)bindNewPhoneNumber:(id)sender
 {
     
 }
@@ -388,6 +410,9 @@ AddOrSubBlock addBlock, subBlock;
     [self setContainerView2:nil];
     [self setProductNameLabel:nil];
     [self setInputAccessoryView:nil];
+    [self setContainerView3:nil];
+    [self setContainerView4:nil];
+    [self setBindphoneNumberLabel:nil];
     [super viewDidUnload];
 }
 @end

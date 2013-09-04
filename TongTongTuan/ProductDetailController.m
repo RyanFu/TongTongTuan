@@ -15,6 +15,7 @@
 #import "OrderController.h"
 #import "FXKeychain+User.h"
 #import "UserLoginController.h"
+#import "AppDelegate.h"
 
 static const CGFloat lMargin = 10.0,            
                      rMargin = lMargin,
@@ -191,7 +192,26 @@ static const CGFloat lMargin = 10.0,
     };
     
     if([FXKeychain isUserLogin]){
-        TempBlock();
+        // 用户未显示退出登陆，这里需要自动调用登陆接口以获取用户信息
+        if(GetUserInfo() == nil){
+#warning 给出等待提示
+            [RESTFulEngine userLoginWithUserName:[FXKeychain userAccount]
+                                     andPassword:[FXKeychain userPassword]
+                                       onSuccess:^(JSONModel *aModelBaseObject) {
+                                           UserLoginInfo *info = (UserLoginInfo *)aModelBaseObject;
+                                           if(info.result){
+                                               SetUserInfo(info.CustomerInfo);
+                                               TempBlock();
+                                           }else{
+                                               // 获取用户信息失败
+                                           }
+                                           
+            } onError:^(NSError *engineError) {
+                
+            }];
+        }else{
+            TempBlock();
+        }
     }else{
         UserLoginController *ULC =
         [[UserLoginController alloc] initWithNibName:@"UserLoginController" bundle:nil];

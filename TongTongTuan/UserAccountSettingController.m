@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "FXKeychain+User.h"
 #import "ResetUserPasswordController.h"
+#import "ShippingAddressList.h"
+#import "NewShippingAddress.h"
 
 @interface UserAccountSettingController ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -22,6 +24,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"我的账户";
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
@@ -128,7 +131,9 @@
         }
             
         case 3:{
-        
+            NewShippingAddress *NSA =
+            [[NewShippingAddress alloc] initWithNibName:@"NewShippingAddress" bundle:nil];
+            [self.navigationController pushViewController:NSA animated:YES];
             break;
         }
         default:break;

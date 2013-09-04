@@ -16,9 +16,15 @@
 #define SCREEN_HEIGHT ([[UIApplication sharedApplication] isStatusBarHidden] ? ([[UIScreen mainScreen] bounds].size.height) : ([[UIScreen mainScreen] bounds].size.height-20))
 
 #define LHError(error) if (error) { \
-NSLog(@"===发生错误:%@ (%d) ERROR: %@", \
+NSLog(@"在文件:%@(%d行)发生错误: %@", \
 [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
 __LINE__, [error localizedDescription]); \
+}
+
+#define LHException(ex) if (ex) { \
+NSLog(@"在文件:%@(%d行)产生异常: %@", \
+[[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
+__LINE__, [ex reason]); \
 }
 
 #define FLOAT_TO_STRING(f) [NSString stringWithFormat:@"%.2f",f]

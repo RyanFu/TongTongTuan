@@ -8,23 +8,31 @@
 
 
 #import "NSDictionary+DictionaryWithObject.h"
+#import "JSONModel.h"
 #import <objc/runtime.h>
 
 @implementation NSDictionary (DictionaryWithObject)
-+(NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj
++(NSMutableDictionary *) dictionaryWithPropertiesOfObject:(id)obj
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    
     unsigned count;
-    objc_property_t *properties = class_copyPropertyList([obj class], &count);
+    objc_property_t *p = class_copyPropertyList([obj class], &count);
     
     for (int i = 0; i < count; i++) {
-        NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
-        [dict setObject:[obj valueForKey:key] forKey:key];
+        NSString *key = [NSString stringWithUTF8String:property_getName(p[i])];
+        id v = [obj valueForKey:key];
+        if(v){
+            if([[v class] isSubclassOfClass:[JSONModel class]]){
+                v = [NSDictionary dictionaryWithPropertiesOfObject:v];
+            }
+            [dict setObject:v forKey:key];
+        }else{ // .NET RESTFul框架要求字符串类型变量的值为NULL时，将一个空字符串付给此变量
+            v = @"";
+            [dict setObject:v forKey:key];
+        }
     }
     
-    free(properties);
-    
-    return [NSDictionary dictionaryWithDictionary:dict];
+    free(p);
+    return dict;
 }
 @end

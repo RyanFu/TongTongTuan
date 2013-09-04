@@ -7,6 +7,7 @@
 //
 
 #import "JSONModel.h"
+#import "Defines.h"
 
 @implementation JSONModel
 -(id) initWithDictionary:(NSMutableDictionary*) jsonObject
@@ -28,8 +29,7 @@
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    NSLog(@"%@:%@", key, value);
-    NSLog(@"%@：设置值出错，未定义的键：%@", NSStringFromClass([self class]), key);
+    NSLog(@"%@：设置值出错，未定义的键：%@: %@", NSStringFromClass([self class]), key, value);
 }
 
 - (void)setValue:(id)value forKey:(NSString *)key
@@ -38,10 +38,7 @@
         [super setValue:value forKey:key];
     }
     @catch (NSException *exception) {
-        NSLog(@"---------------------------\n| 设置值发生异常:%@ |---------------------------\n", [exception reason]);
-    }
-    @finally {
-        
+        LHException(exception);
     }
 }
 
